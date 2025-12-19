@@ -1,0 +1,23 @@
+ # Dependencies
+node_modules/
+.next/
+.yarn/
+
+# Environment
+.env*.local
+.env
+
+# Build
+out/
+dist/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
