@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Filter, Search, Grid, List, Star, Package, Clock } from 'lucide-react';
-import ProductCard from '@/components/shop/ProductCard';
 import FilterSidebar from '@/components/shop/FilterSidebar';
-
+import ProductCard from '@/components/shop/ProductCard';
 // Sample product data - In reality, this will come from your backend
 const initialProducts = [
   {
@@ -176,7 +175,7 @@ export default function ShopPage() {
   
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [priceRange, setPriceRange] = useState([0, 100000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [selectedZones, setSelectedZones] = useState<string[]>([]);
   const [inStockOnly, setInStockOnly] = useState(false);

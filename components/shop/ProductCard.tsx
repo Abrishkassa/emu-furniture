@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { 
   Heart, 
   Share2, 
-  Package, 
   Clock, 
   MapPin,
   Check,
-  AlertCircle
+  ShoppingCart
 } from 'lucide-react';
 
-interface Product {
+// Define types at the top
+type ProductType = {
   id: number;
   name_en: string;
   name_am: string;
@@ -27,13 +27,13 @@ interface Product {
   deliveryZones: string[];
   images: string[];
   estimatedWeeks: number | null;
-}
+};
 
-interface ProductCardProps {
-  product: Product;
+type ProductCardProps = {
+  product: ProductType;
   viewMode: 'grid' | 'list';
   language: 'en' | 'am';
-}
+};
 
 export default function ProductCard({ product, viewMode, language }: ProductCardProps) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -48,7 +48,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
   };
 
   const handleReserve = () => {
-    const whatsappNumber = '+251911234567'; // Replace with actual
+    const whatsappNumber = '+251911234567';
     const message = encodeURIComponent(
       `Hello! I'm interested in reserving: ${product.name_en}\nPrice: ${formatPrice(product.price)}\n\nCan you help me with this?`
     );
@@ -56,34 +56,33 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
   };
 
   const handleShare = async () => {
-    const shareData = {
-      title: product.name_en,
-      text: `Check out this ${product.name_en} from Emu Furniture!`,
-      url: window.location.href,
-    };
-    
     if (navigator.share) {
       try {
-        await navigator.share(shareData);
+        await navigator.share({
+          title: product.name_en,
+          text: `Check out ${product.name_en} from Emu Furniture!`,
+          url: window.location.href,
+        });
       } catch (err) {
         console.log('Error sharing:', err);
       }
     } else {
-      // Fallback: Copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert('Link copied to clipboard!');
     }
   };
 
+  // Grid View
   if (viewMode === 'grid') {
     return (
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-        {/* Product Image */}
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+        {/* Image Section */}
         <div className="relative h-64 bg-gradient-to-br from-amber-100 to-amber-50">
           <div className="absolute top-4 right-4 flex space-x-2">
             <button
               onClick={() => setIsFavorite(!isFavorite)}
-              className="p-2 bg-white rounded-full shadow hover:bg-gray-50"
+              className="p-2 bg-white rounded-full shadow hover:bg-gray-50 transition"
+              aria-label="Add to favorites"
             >
               <Heart 
                 className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
@@ -91,7 +90,8 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
             </button>
             <button
               onClick={handleShare}
-              className="p-2 bg-white rounded-full shadow hover:bg-gray-50"
+              className="p-2 bg-white rounded-full shadow hover:bg-gray-50 transition"
+              aria-label="Share product"
             >
               <Share2 className="w-5 h-5 text-gray-600" />
             </button>
@@ -127,7 +127,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
           </div>
         </div>
 
-        {/* Product Info */}
+        {/* Info Section */}
         <div className="p-6">
           <div className="mb-2">
             <span className="text-sm text-amber-600 font-medium">
@@ -170,8 +170,9 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
           <div className="space-y-3">
             <button
               onClick={handleReserve}
-              className="w-full bg-amber-600 text-white py-3 rounded-lg font-medium hover:bg-amber-700 transition"
+              className="w-full bg-amber-600 text-white py-3 rounded-lg font-medium hover:bg-amber-700 transition flex items-center justify-center"
             >
+              <ShoppingCart className="w-5 h-5 mr-2" />
               {language === 'en' ? 'Reserve Now' : 'አሁን ያስቀምጡ'}
             </button>
             
@@ -214,7 +215,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
 
   // List View
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+    <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Image */}
         <div className="md:w-1/4">
@@ -229,7 +230,8 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
             <div className="absolute bottom-3 right-3 flex space-x-2">
               <button
                 onClick={() => setIsFavorite(!isFavorite)}
-                className="p-2 bg-white rounded-full shadow hover:bg-gray-50"
+                className="p-2 bg-white rounded-full shadow hover:bg-gray-50 transition"
+                aria-label="Add to favorites"
               >
                 <Heart 
                   className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
@@ -237,7 +239,8 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
               </button>
               <button
                 onClick={handleShare}
-                className="p-2 bg-white rounded-full shadow hover:bg-gray-50"
+                className="p-2 bg-white rounded-full shadow hover:bg-gray-50 transition"
+                aria-label="Share product"
               >
                 <Share2 className="w-5 h-5 text-gray-600" />
               </button>
@@ -308,7 +311,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
               <p className="font-medium">{product.dimensions}</p>
             </div>
             <div className="bg-gray-50 p-3 rounded-lg">
-              <p className="text-sm text-gray-500">{language === 'en' ? 'Delivery Zones' : 'የማድረሻ ዞኖች'}</p>
+              <p className="text-sm text-gray-500">{language === 'en' ? 'Delivery' : 'ማድረሻ'}</p>
               <p className="font-medium text-green-600">
                 {product.deliveryZones.length} {language === 'en' ? 'areas' : 'አካባቢዎች'}
               </p>
@@ -329,7 +332,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
             <div className="flex items-center text-gray-600">
               <MapPin className="w-5 h-5 mr-2" />
               <span className="text-sm">
-                {language === 'en' ? 'Available for delivery in:' : 'ለማድረስ የሚገኝበት:'} {' '}
+                {language === 'en' ? 'Available in:' : 'የሚገኝበት:'} {' '}
                 <span className="font-medium">{product.deliveryZones.join(', ')}</span>
               </span>
             </div>
@@ -347,8 +350,9 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
               
               <button
                 onClick={handleReserve}
-                className="px-8 py-3 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 transition flex-1 md:flex-none"
+                className="px-8 py-3 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 transition flex items-center"
               >
+                <ShoppingCart className="w-5 h-5 mr-2" />
                 {language === 'en' ? 'Reserve Now' : 'አሁን ያስቀምጡ'}
               </button>
             </div>
