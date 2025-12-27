@@ -2,19 +2,55 @@
 
 import { MessageCircle } from 'lucide-react';
 
-export default function WhatsAppButton() {
-  const whatsappNumber = '+251911234567'; // Replace with actual number
-  const message = encodeURIComponent("Hello! I'm interested in Emu Furniture products.");
+interface WhatsAppButtonProps {
+  productName?: string;
+  price?: number;
+  className?: string;
+  isReserveButton?: boolean;
+  language?: 'en' | 'am';
+}
+
+export default function WhatsAppButton({ 
+  productName, 
+  price, 
+  className = "",
+  isReserveButton = false,
+  language = 'en'
+}: WhatsAppButtonProps) {
+  
+  const phoneNumber = "+251911234567"; // Your WhatsApp number
+  
+  const createMessage = () => {
+    if (productName && price) {
+      if (language === 'am') {
+        return `ሰላም! ስለ "${productName}" ፈርኒቸር መረጃ እፈልጋለሁ። ዋጋ: ${price.toLocaleString()} ብር። እባክዎ ይተውልኝ!`;
+      }
+      return `Hello! I'm interested in the "${productName}" furniture. Price: ${price.toLocaleString()} ETB. Please contact me!`;
+    }
+    
+    if (language === 'am') {
+      return "ሰላም! ስለ ኢሙ ፈርኒቸር ምርቶች መረጃ እፈልጋለሁ። እባክዎ ያነጋግሩኝ!";
+    }
+    return "Hello! I'm interested in Emu Furniture products. Please contact me!";
+  };
+
+  const handleClick = () => {
+    const message = encodeURIComponent(createMessage());
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+  };
 
   return (
-    <a
-      href={`https://wa.me/${whatsappNumber}?text=${message}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition-all hover:scale-110 animate-bounce"
-      title="Chat on WhatsApp"
+    <button
+      onClick={handleClick}
+      className={`${className} bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2`}
     >
-      <MessageCircle size={28} />
-    </a>
+      <MessageCircle className="w-5 h-5" />
+      {isReserveButton ? (
+        language === 'am' ? 'በዋትስአፕ ያስይዙ' : 'Reserve via WhatsApp'
+      ) : (
+        language === 'am' ? 'በዋትስአፕ ያነጋግሩ' : 'Chat on WhatsApp'
+      )}
+    </button>
   );
 }

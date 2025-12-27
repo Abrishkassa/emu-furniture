@@ -1,26 +1,30 @@
 import { Shield, Truck, CreditCard, HeadphonesIcon } from 'lucide-react';
 
-export default function TrustBadges() {
+interface TrustBadgesProps {
+  language?: 'en' | 'am';
+}
+
+export default function TrustBadges({ language = 'en' }: TrustBadgesProps) {
   const badges = [
     {
       icon: Shield,
-      title: "Secure Payment",
-      description: "100% secure & encrypted payments"
+      title: language === 'am' ? "አስተማማኝ ክፍያ" : "Secure Payment",
+      description: language === 'am' ? "100% አስተማማኝ እና ምስጢራዊ ክፍያዎች" : "100% secure & encrypted payments"
     },
     {
       icon: Truck,
-      title: "Free Delivery",
-      description: "Free delivery in Addis Ababa"
+      title: language === 'am' ? "ነጻ መላኪያ" : "Free Delivery",
+      description: language === 'am' ? "በአዲስ አበባ ነጻ መላኪያ" : "Free delivery in Addis Ababa"
     },
     {
       icon: CreditCard,
-      title: "Flexible Payment",
-      description: "Pay in installments available"
+      title: language === 'am' ? "ልዩ የክፍያ አማራጮች" : "Flexible Payment",
+      description: language === 'am' ? "በክፍል ክፍያ ይገኛል" : "Pay in installments available"
     },
     {
       icon: HeadphonesIcon,
-      title: "24/7 Support",
-      description: "Always here to help you"
+      title: language === 'am' ? "ሁልጊዜ ድጋፍ" : "24/7 Support",
+      description: language === 'am' ? "ሁልጊዜ እዚህ ለማገልገልዎ" : "Always here to help you"
     }
   ];
 
@@ -28,7 +32,7 @@ export default function TrustBadges() {
     <div className="py-12 bg-gradient-to-r from-amber-50 to-amber-100 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-10 text-gray-800 dark:text-white">
-          Why Customers Trust Us
+          {language === 'am' ? 'ደንበኞች ለምን እንደሚታረኩን' : 'Why Customers Trust Us'}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {badges.map((badge, index) => (

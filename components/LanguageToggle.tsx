@@ -5,18 +5,23 @@ import { Globe } from 'lucide-react';
 
 type Language = 'am' | 'en';
 
-interface Translations {
-  [key: string]: {
-    en: string;
-    am: string;
-  };
+interface LanguageToggleProps {
+  onLanguageChange?: (lang: Language) => void;
+  currentLanguage?: Language;
 }
 
-export default function LanguageToggle() {
-  const [language, setLanguage] = useState<Language>('en');
+export default function LanguageToggle({ 
+  onLanguageChange,
+  currentLanguage = 'en' 
+}: LanguageToggleProps) {
+  const [language, setLanguage] = useState<Language>(currentLanguage);
 
   const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'am' : 'en');
+    const newLang = language === 'en' ? 'am' : 'en';
+    setLanguage(newLang);
+    if (onLanguageChange) {
+      onLanguageChange(newLang);
+    }
   };
 
   return (

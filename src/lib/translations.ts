@@ -2,7 +2,7 @@ export const translations = {
   // Hero Section
   heroTitle: {
     en: "Emu Furniture",
-    am: "ኢሙ ፈርኒቸር"
+    am: "እሙ ፈርኒቸር"
   },
   heroSubtitle: {
     en: "Ethiopian Craftsmanship Meets Modern Design Excellence",
@@ -14,7 +14,7 @@ export const translations = {
   },
   bookShowroomVisit: {
     en: "Book Showroom Visit",
-    am: "ሸውራውን ለመጎብኘት ይዘዙ"
+    am: "ሾው ሩም ለመጎብኘት ይዘዙ"
   },
   happyCustomers: {
     en: "Happy Customers",
@@ -26,13 +26,13 @@ export const translations = {
   },
   yearsExperience: {
     en: "Years Experience",
-    am: "ዓመታት ልምድ"
+    am: "የዓመታት ልምድ"
   },
   
   // Trust Badges
   whyTrustUs: {
     en: "Why Customers Trust Us",
-    am: "ደንበኞች ለምን እንደሚታረኩን"
+    am: "ደንበኞች ለምን ያምኑናል"
   },
   securePayment: {
     en: "Secure Payment",
@@ -47,8 +47,8 @@ export const translations = {
     am: "ነጻ መላኪያ"
   },
   freeDeliveryDesc: {
-    en: "Free delivery in Addis Ababa",
-    am: "በአዲስ አበባ ነጻ መላኪያ"
+    en: "Free delivery in Hawassa",
+    am: "በሃዋሳ ነጻ መላኪያ"
   },
   flexiblePayment: {
     en: "Flexible Payment",

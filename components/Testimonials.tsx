@@ -3,47 +3,76 @@ import { Star, Quote } from 'lucide-react';
 interface Testimonial {
   id: number;
   name: string;
-  role: string;
-  content: string;
+  role: {
+    en: string;
+    am: string;
+  };
+  content: {
+    en: string;
+    am: string;
+  };
   rating: number;
-  image?: string;
+}
+
+interface TestimonialsProps {
+  language?: 'en' | 'am';
 }
 
 const testimonials: Testimonial[] = [
   {
     id: 1,
     name: "Alemayehu Bekele",
-    role: "Interior Designer",
-    content: "The quality of craftsmanship is exceptional. My clients are always impressed with Emu Furniture pieces.",
+    role: {
+      en: "Interior Designer",
+      am: "የውስጥ ዲዛይነር"
+    },
+    content: {
+      en: "The quality of craftsmanship is exceptional. My clients are always impressed with Emu Furniture pieces.",
+      am: "የጥበብ ስራው ጥራት አስገራሚ ነው። ደንበኞቼ ሁልጊዜ በኢሙ ፈርኒቸር ምርቶች ይገረማሉ።"
+    },
     rating: 5
   },
   {
     id: 2,
     name: "Sara Mohammed",
-    role: "Homeowner",
-    content: "Ordered a custom sofa and it exceeded my expectations. The team was professional and delivered on time.",
+    role: {
+      en: "Homeowner",
+      am: "የቤት ባለቤት"
+    },
+    content: {
+      en: "Ordered a custom sofa and it exceeded my expectations. The team was professional and delivered on time.",
+      am: "በትእዛዝ ሶፋ አዘዝኩት፣ ከተጠበቀው በላይ ነበር። ቡድኑ ባለሙያዎች ነበሩ እና በጊዜው አቅርበዋል።"
+    },
     rating: 5
   },
   {
     id: 3,
     name: "Thomas Johnson",
-    role: "Hotel Manager",
-    content: "Furnished our entire boutique hotel with Emu Furniture. The durability and design are perfect.",
+    role: {
+      en: "Hotel Manager",
+      am: "የሆቴል አስተዳዳሪ"
+    },
+    content: {
+      en: "Furnished our entire boutique hotel with Emu Furniture. The durability and design are perfect.",
+      am: "ሙሉውን ቡቲክ ሆቴላችን በኢሙ ፈርኒቸር አበጋጅተነዋል። ዘላቂነቱ እና ዲዛይኑ ፍጹም ነው።"
+    },
     rating: 4
   }
 ];
 
-export default function Testimonials() {
+export default function Testimonials({ language = 'en' }: TestimonialsProps) {
   return (
     <div className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
           <Quote className="w-12 h-12 mx-auto mb-4 text-amber-600 dark:text-amber-500" />
           <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
-            What Our Customers Say
+            {language === 'am' ? 'ደንበኞቻችን ምን ይላሉ' : 'What Our Customers Say'}
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mt-2">
-            Join thousands of satisfied customers across Ethiopia
+            {language === 'am' 
+              ? 'በመላው ኢትዮጵያ ያሉ በሺዎች የሚቆጠሩ ደስተኛ ደንበኞች ይሁኑ'
+              : 'Join thousands of satisfied customers across Ethiopia'}
           </p>
         </div>
         
@@ -63,14 +92,14 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-600 dark:text-gray-300 italic mb-6">
-                "{testimonial.content}"
+                "{testimonial.content[language]}"
               </p>
               <div className="border-t pt-4">
                 <p className="font-bold text-gray-800 dark:text-white">
                   {testimonial.name}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {testimonial.role}
+                  {testimonial.role[language]}
                 </p>
               </div>
             </div>
