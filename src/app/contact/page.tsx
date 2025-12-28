@@ -637,7 +637,7 @@ export default function ContactPage() {
                 {/* Google Map */}
                 <div className="rounded-xl overflow-hidden h-64">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.573710286464!2d38.77183407564615!3d9.022219488247652!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f0f8e1c21f%3A0x40e59d6592e8edbd!2sMegenagna%2C%20Addis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                    //src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.573710286464!2d38.77183407564615!3d9.022219488247652!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f0f8e1c21f%3A0x40e59d6592e8edbd!2sMegenagna%2C%20Addis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
