@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
 export default function ThemeToggle() {
-  const [darkMode, setDarkMode] = useState<boolean | null>(null);
+  const [darkMode, setDarkMode] = useState<boolean | null>(false); // Set default to false (light mode)
 
   useEffect(() => {
     // Initialize theme from localStorage or system preference

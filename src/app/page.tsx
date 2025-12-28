@@ -420,7 +420,7 @@ export default function Home() {
                   {/* Google Maps Embed */}
                   <div className="flex-grow relative">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.573710286464!2d38.77183407564615!3d9.022219488247652!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f0f8e1c21f%3A0x40e59d6592e8edbd!2sMegenagna%2C%20Addis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                      src="https://www.google.com/search?q=2FMP%2B954%2C+Hawassa&oq=2FMP%2B954%2C+Hawassa&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigAdIBCDE2MzFqMGo3qAIIsAIB8QVb_8ZIAOGQ4vEFW__GSADhkOI&sourceid=chrome&ie=UTF-8"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
@@ -439,7 +439,7 @@ export default function Home() {
                           {language === 'am' ? 'መመሪያዎች' : 'Get Directions'}
                         </p>
                         <p className="text-xs text-gray-600 dark:text-gray-300">
-                          {language === 'am' ? 'ከፍሪንድሺፕ ሆቴል 5 ደቂቃ እግረኛ' : '5 min walk from Friendship Hotel'}
+                          {language === 'am' ? 'ከአቶተ ዋንዛ ወደ ፉራ ሚወስደው አስፋልት 5 ደቂቃ እግረኛ' : '5 min walk from Atote wanza to fura'}
                         </p>
                       </div>
                       <button className="px-4 py-2 bg-amber-600 hover:bg-amber-700 dark:bg-amber-700 dark:hover:bg-amber-600 text-white text-sm rounded-lg transition-colors">
