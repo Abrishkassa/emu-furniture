@@ -1,14 +1,335 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")  // Fixed: Should reference env variable
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  phone         String?
+  role          Role      @default(CUSTOMER)
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  orders        Order[]
+  addresses     Address[]
+  cartItems     CartItem[]
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  STAFF
+}
+
+model Address {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  street      String
+  city        String
+  state       String?
+  zipCode     String?
+  country     String   @default("Ethiopia")
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id                String   @id @default(cuid())
+  nameEn            String
+  nameAm            String
+  descriptionEn     String
+  descriptionAm     String
+  price             Float
+  currency          String   @default("ETB")
+  categoryEn        String
+  categoryAm        String
+  subCategory       String?
+  images            String[]
+  length            Float?
+  width             Float?
+  height            Float?
+  unit              String   @default("cm")
+  material          String?
+  color             String?
+  inStock           Boolean  @default(true)
+  stockQuantity     Int      @default(0)
+  isPopular         Boolean  @default(false)
+  isFeatured        Boolean  @default(false)
+  rating            Float    @default(0)  // Changed: Float instead of Decimal with @db.Decimal
+  numberOfReviews   Int      @default(0)
+  estimatedDelivery String?
+  specifications    Json?
+  tags              String[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  orderItems        OrderItem[]  // Fixed: Changed from 'orders' to 'orderItems' for consistency
+  cartItems         CartItem[]
+}
+
+model Order {
+  id               String        @id @default(cuid())
+  userId           String
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderNumber      String        @unique
+  totalAmount      Float
+  currency         String        @default("ETB")
+  status           OrderStatus   @default(PENDING)
+  paymentMethod    String?
+  paymentStatus    PaymentStatus @default(PENDING)
+  shippingAddress  Json
+  billingAddress   Json?
+  notes            String?
+  trackingNumber   String?
+  estimatedDelivery DateTime?
+  deliveredAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  items            OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int      @default(1)
+  price     Float
+  createdAt DateTime @default(now())
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model BlogPost {
+  id              String       @id @default(cuid())
+  titleEn         String
+  titleAm         String
+  excerptEn       String
+  excerptAm       String
+  contentEn       String
+  contentAm       String
+  author          String
+  authorRoleEn    String?
+  authorRoleAm    String?
+  date            DateTime     @default(now())
+  readTime        Int
+  category        BlogCategory
+  tags            String[]
+  imageUrl        String?
+  likes           Int          @default(0)
+  comments        Int          @default(0)
+  shares          Int          @default(0)
+  views           Int          @default(0)
+  featured        Boolean      @default(false)
+  status          PostStatus   @default(PUBLISHED)
+  slug            String       @unique
+  metaDescriptionEn String?
+  metaDescriptionAm String?
+  metaKeywords    String[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+enum BlogCategory {
+  DESIGN
+  TIPS
+  MATERIALS
+  SUSTAINABILITY
+  NEWS
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model ContactSubmission {
+  id            String            @id @default(cuid())
+  name          String
+  email         String
+  phone         String
+  subject       String
+  message       String
+  department    ContactDepartment @default(GENERAL)
+  contactMethod ContactMethod     @default(WHATSAPP)
+  status        ContactStatus     @default(NEW)
+  assignedTo    String?
+  notes         String?
+  source        String            @default("website")
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+enum ContactDepartment {
+  GENERAL
+  SALES
+  SUPPORT
+  CUSTOM
+  SHOWROOM
+}
+
+enum ContactMethod {
+  WHATSAPP
+  PHONE
+  EMAIL
+}
+
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model CustomOrder {
+  id                      String              @id @default(cuid())
+  customerName            String
+  customerEmail           String
+  customerPhone           String
+  category                CustomOrderCategory
+  length                  Float?
+  width                   Float?
+  height                  Float?
+  unit                    String              @default("cm")
+  material                String?
+  color                   String?
+  budget                  Float?
+  timeline                CustomOrderTimeline?
+  additionalNotes         String?
+  designReferences        String[]
+  status                  CustomOrderStatus   @default(INQUIRY)
+  assignedTo              String?
+  quoteAmount             Float?
+  depositPaid             Boolean             @default(false)
+  depositAmount           Float?
+  estimatedCompletionDate DateTime?
+  actualCompletionDate    DateTime?
+  notes                   String?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  communicationHistory    CommunicationHistory[]
+}
+
+model CommunicationHistory {
+  id              String             @id @default(cuid())
+  customOrderId   String
+  customOrder     CustomOrder        @relation(fields: [customOrderId], references: [id], onDelete: Cascade)
+  date            DateTime           @default(now())
+  type            CommunicationType
+  summary         String
+  details         String?
+  createdAt       DateTime           @default(now())
+}
+
+enum CustomOrderCategory {
+  SOFA
+  BED
+  CHAIR
+  TABLE
+  WARDROBE
+  OTHER
+}
+
+enum CustomOrderTimeline {
+  URGENT
+  SIX_TO_EIGHT_WEEKS
+  TEN_TO_TWELVE_WEEKS
+  FLEXIBLE
+}
+
+enum CustomOrderStatus {
+  INQUIRY
+  CONSULTATION
+  DESIGN
+  QUOTE
+  APPROVED
+  PRODUCTION
+  COMPLETED
+  CANCELLED
+}
+
+enum CommunicationType {
+  EMAIL
+  WHATSAPP
+  CALL
+  MEETING
+  INTERNAL
+}
+
+model ShowroomBooking {
+  id                  String        @id @default(cuid())
+  visitorName         String
+  visitorEmail        String?
+  visitorPhone        String
+  bookingDate         DateTime
+  bookingTime         String
+  numberOfGuests      Int           @default(1)
+  specialRequirements String?
+  visitType           VisitType     @default(GENERAL)
+  status              BookingStatus @default(PENDING)
+  confirmedBy         String?
+  confirmationDate    DateTime?
+  notes               String?
+  followUpRequired    Boolean       @default(false)
+  followUpDate        DateTime?
+  source              String        @default("website")
+  ipAddress           String?
+  userAgent           String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+enum VisitType {
+  PRIVATE_TOUR
+  FAMILY_VISIT
+  BUSINESS_VISIT
+  GENERAL
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
 }
