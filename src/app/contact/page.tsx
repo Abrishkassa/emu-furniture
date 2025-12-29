@@ -281,15 +281,18 @@ export default function ContactPage() {
     }));
   };
 
+  // ================ UPDATED HANDLE SUBMIT FUNCTION ================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('submitting');
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // If using WhatsApp method
+      // Validate required fields
+      if (!formData.name || !formData.phone || !formData.message) {
+        throw new Error('Please fill in all required fields');
+      }
+
+      // Handle WhatsApp contact method
       if (activeContactMethod === 'whatsapp') {
         const message = encodeURIComponent(
           language === 'am' 
@@ -310,7 +313,39 @@ export default function ContactPage() {
         );
         window.open(`https://wa.me/+251911234567?text=${message}`, '_blank');
       }
-      
+
+      // Prepare data for backend submission
+      const submissionData = {
+        name: formData.name,
+        email: formData.email || '',
+        phone: formData.phone,
+        subject: formData.subject || t('generalInquiry'),
+        message: formData.message,
+        department: formData.department.toUpperCase() as 'GENERAL' | 'SALES' | 'SUPPORT' | 'CUSTOM' | 'SHOWROOM',
+        contactMethod: activeContactMethod.toUpperCase() as 'WHATSAPP' | 'PHONE' | 'EMAIL',
+        status: 'NEW'
+      };
+
+      console.log('Submitting contact form:', submissionData);
+
+      // Submit to backend API
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/contact/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit contact form');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
+
+      // Success: show success message and reset form
       setFormStatus('success');
       setFormData({
         name: '',
@@ -320,14 +355,19 @@ export default function ContactPage() {
         message: '',
         department: 'general'
       });
-      
+
       // Reset success message after 5 seconds
       setTimeout(() => setFormStatus('idle'), 5000);
+
     } catch (error) {
+      console.error('Error submitting form:', error);
       setFormStatus('error');
+      
+      // Show error message for 5 seconds
       setTimeout(() => setFormStatus('idle'), 5000);
     }
   };
+  // ================ END OF UPDATED HANDLE SUBMIT ================
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -405,7 +445,16 @@ export default function ContactPage() {
               {formStatus === 'error' && (
                 <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg flex items-center">
                   <AlertCircle className="w-5 h-5 mr-3" />
-                  {t('formError')}
+                  <span>
+                    {t('formError')}
+                    {formStatus === 'error' && formData.name && (
+                      <span className="text-sm block mt-1">
+                        {language === 'am' 
+                          ? 'እባክዎ በጥሬው ይደውሉ: +251 91 123 4567'
+                          : 'Please call us directly: +251 91 123 4567'}
+                      </span>
+                    )}
+                  </span>
                 </div>
               )}
 
@@ -467,11 +516,10 @@ export default function ContactPage() {
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label className="block mb-2 font-medium text-gray-700 dark:text-gray-300">
-                      {t('subjectLabel')} *
+                      {t('subjectLabel')}
                     </label>
                     <select
                       name="subject"
-                      required
                       value={formData.subject}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -498,6 +546,7 @@ export default function ContactPage() {
                       <option value="sales">{language === 'am' ? 'ሽያጭ' : 'Sales'}</option>
                       <option value="support">{language === 'am' ? 'ድጋፍ' : 'Support'}</option>
                       <option value="custom">{language === 'am' ? 'ብጁ' : 'Custom'}</option>
+                      <option value="showroom">{language === 'am' ? 'ሽውራ' : 'Showroom'}</option>
                     </select>
                   </div>
                 </div>
@@ -529,7 +578,7 @@ export default function ContactPage() {
                     {formStatus === 'submitting' ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        {language === 'am' ? 'በመላክ ላይ...' : 'Sending...'}
+                        {language === 'am' ? 'በመላክ ላይ...' : 'Submitting...'}
                       </>
                     ) : (
                       <>
