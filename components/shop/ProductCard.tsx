@@ -12,7 +12,7 @@ import {
 
 // Define types at the top
 type ProductType = {
-  id: number;
+  id: string | number;
   name_en: string;
   name_am: string;
   description: string;

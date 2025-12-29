@@ -1,33 +1,63 @@
-const express = require('express');
-const router = express.Router();
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-// Get all products
+// Update the GET /api/products route
 router.get('/', async (req, res) => {
   try {
-    const { category, featured, popular, limit, skip } = req.query;
+    const { 
+      category, 
+      featured, 
+      popular, 
+      inStock, 
+      search,
+      minPrice,
+      maxPrice,
+      limit, 
+      skip 
+    } = req.query;
     
     const where = {};
     
-    if (category) {
+    // Search filter
+    if (search) {
+      where.OR = [
+        { nameEn: { contains: search, mode: 'insensitive' } },
+        { nameAm: { contains: search, mode: 'insensitive' } },
+        { descriptionEn: { contains: search, mode: 'insensitive' } },
+        { descriptionAm: { contains: search, mode: 'insensitive' } }
+      ];
+    }
+    
+    // Category filter
+    if (category && category !== 'all') {
       where.OR = [
         { categoryEn: { contains: category, mode: 'insensitive' } },
         { categoryAm: { contains: category, mode: 'insensitive' } }
       ];
     }
     
+    // Featured filter
     if (featured === 'true') {
       where.isFeatured = true;
     }
     
+    // Popular filter
     if (popular === 'true') {
       where.isPopular = true;
     }
     
+    // In stock filter
+    if (inStock === 'true') {
+      where.inStock = true;
+    }
+    
+    // Price range filter
+    if (minPrice || maxPrice) {
+      where.price = {};
+      if (minPrice) where.price.gte = parseFloat(minPrice);
+      if (maxPrice) where.price.lte = parseFloat(maxPrice);
+    }
+    
     const products = await prisma.product.findMany({
       where,
-      take: parseInt(limit) || 20,
+      take: parseInt(limit) || 50, // Increased limit for better UX
       skip: parseInt(skip) || 0,
       orderBy: { createdAt: 'desc' }
     });
@@ -38,66 +68,3 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-// Get single product
-router.get('/:id', async (req, res) => {
-  try {
-    const product = await prisma.product.findUnique({
-      where: { id: req.params.id }
-    });
-    
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-    
-    res.json(product);
-  } catch (error) {
-    console.error('Error fetching product:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-// Create product
-router.post('/', async (req, res) => {
-  try {
-    const product = await prisma.product.create({
-      data: req.body
-    });
-    
-    res.status(201).json(product);
-  } catch (error) {
-    console.error('Error creating product:', error);
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// Update product
-router.put('/:id', async (req, res) => {
-  try {
-    const product = await prisma.product.update({
-      where: { id: req.params.id },
-      data: req.body
-    });
-    
-    res.json(product);
-  } catch (error) {
-    console.error('Error updating product:', error);
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// Delete product
-router.delete('/:id', async (req, res) => {
-  try {
-    await prisma.product.delete({
-      where: { id: req.params.id }
-    });
-    
-    res.json({ message: 'Product deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-module.exports = router;

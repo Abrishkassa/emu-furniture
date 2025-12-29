@@ -329,7 +329,7 @@ export default function ContactPage() {
       console.log('Submitting contact form:', submissionData);
 
       // Submit to backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/contact/submit`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
