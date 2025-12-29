@@ -33,6 +33,7 @@ type ProductCardProps = {
   product: ProductType;
   viewMode: 'grid' | 'list';
   language: 'en' | 'am';
+  isMock?: boolean;
 };
 
 export default function ProductCard({ product, viewMode, language }: ProductCardProps) {
