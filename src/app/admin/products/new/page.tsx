@@ -19,6 +19,7 @@ import {
   Star
 } from 'lucide-react';
 import Link from 'next/link';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -96,22 +97,6 @@ export default function NewProductPage() {
     }
   };
 
-  const handleImageAdd = (imageUrl: string) => {
-    if (imageUrl.trim() && !formData.images.includes(imageUrl.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        images: [...prev.images, imageUrl.trim()]
-      }));
-    }
-  };
-
-  const handleImageRemove = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index)
-    }));
-  };
-
   const handleTagAdd = (tag: string) => {
     const trimmedTag = tag.trim().toLowerCase();
     if (trimmedTag && !formData.tags.includes(trimmedTag)) {
@@ -145,6 +130,11 @@ export default function NewProductPage() {
       return false;
     }
     
+    if (formData.images.length === 0) {
+      setError('At least one product image is required');
+      return false;
+    }
+    
     return true;
   };
 
@@ -163,17 +153,21 @@ export default function NewProductPage() {
         ...formData,
         price: parseFloat(formData.price),
         stockQuantity: parseInt(formData.stockQuantity) || 0,
-        // Ensure arrays are properly formatted
-        tags: formData.tags,
-        images: formData.images.filter(img => img.trim() !== '')
+        // Images are already URLs from the ImageUpload component
+        images: formData.images,
+        // Ensure tags are properly formatted
+        tags: Array.isArray(formData.tags) ? formData.tags : 
+              (typeof formData.tags === 'string' ? [formData.tags] : [])
       };
+      
+      console.log('Sending product data:', productData);
       
       const response = await fetch('http://localhost:5000/api/admin/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Important for authentication
+        credentials: 'include',
         body: JSON.stringify(productData),
       });
       
@@ -219,6 +213,24 @@ export default function NewProductPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Handle images uploaded from ImageUpload component
+  const handleImagesUploaded = (uploadedImages: any[]) => {
+    // Convert uploaded images to simple URLs for the form
+    const imageUrls = uploadedImages.map(img => img.fullUrls.original);
+    setFormData(prev => ({ 
+      ...prev, 
+      images: imageUrls 
+    }));
+  };
+
+  // Remove image from the list
+  const handleImageRemove = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
   };
 
   return (
@@ -574,7 +586,7 @@ export default function NewProductPage() {
           </div>
         </div>
 
-        {/* Section 5: Images */}
+        {/* Section 5: Images - Updated with ImageUpload component */}
         <div className="bg-white rounded-xl shadow border p-6">
           <div className="flex items-center mb-6">
             <div className="bg-pink-100 p-2 rounded-lg mr-3">
@@ -583,55 +595,43 @@ export default function NewProductPage() {
             <h2 className="text-xl font-bold text-gray-800">Product Images</h2>
           </div>
 
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Add Image URLs
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                id="imageInput"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
-                placeholder="https://example.com/image.jpg"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const input = e.target as HTMLInputElement;
-                    handleImageAdd(input.value);
-                    input.value = '';
-                  }
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  const input = document.getElementById('imageInput') as HTMLInputElement;
-                  if (input.value) {
-                    handleImageAdd(input.value);
-                    input.value = '';
-                  }
-                }}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Add
-              </button>
-            </div>
-            <p className="mt-2 text-sm text-gray-500">
-              Press Enter or click Add to add image URL. You can add multiple images.
-            </p>
+          {/* Image Upload Component */}
+          <ImageUpload
+            onImagesUploaded={handleImagesUploaded}
+            maxFiles={10}
+            maxSizeMB={10}
+          />
+
+          <div className="mt-4 text-sm text-gray-500">
+            <p>Upload product images. The first image will be used as the main product image.</p>
           </div>
 
-          {/* Image Previews */}
+          {/* Display uploaded images */}
           {formData.images.length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Added Images ({formData.images.length})</h3>
+            <div className="mt-6">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">
+                Uploaded Images ({formData.images.length})
+              </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {formData.images.map((image, index) => (
+                {formData.images.map((imageUrl, index) => (
                   <div key={index} className="relative group">
                     <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                      <div className="w-full h-full flex items-center justify-center">
-                        <ImageIcon className="w-12 h-12 text-gray-400" />
-                      </div>
+                      <img
+                        src={imageUrl}
+                        alt={`Product image ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                          const parent = (e.target as HTMLImageElement).parentElement;
+                          if (parent) {
+                            parent.innerHTML = `
+                              <div class="w-full h-full flex items-center justify-center">
+                                <ImageIcon class="w-12 h-12 text-gray-400" />
+                              </div>
+                            `;
+                          }
+                        }}
+                      />
                     </div>
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
                       <button
@@ -642,7 +642,7 @@ export default function NewProductPage() {
                         <X className="w-4 h-4" />
                       </button>
                     </div>
-                    <p className="mt-2 text-xs text-gray-500 truncate">{image}</p>
+                    <p className="mt-2 text-xs text-gray-500 truncate">Image {index + 1}</p>
                   </div>
                 ))}
               </div>
