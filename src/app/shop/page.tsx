@@ -1,10 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { Filter, Search, Grid, List, Star, Package, Clock, Loader2 } from 'lucide-react';
 import FilterSidebar from '@/components/shop/FilterSidebar';
 import ProductCard from '@/components/shop/ProductCard';
+import LanguageToggle from '@/components/LanguageToggle';
+import ThemeToggle from '@/components/ThemeToggle';
 
+<><ThemeToggle /><LanguageToggle /></>
 // Categories for filtering - we'll get these from API or keep static
 const categories = [
   { id: 'all', name_en: 'All Products', name_am: 'ሁሉም ምርቶች' },
@@ -23,7 +27,7 @@ const materials = [
 
 // Delivery zones - keep static for now
 const deliveryZones = [
-  'Addis Ababa', 'Bole', 'Megenagna', 'CMC', 'Piassa', 'Bambis', 'Ayat', 'All Areas'
+  'Hawassa', 'Atote', 'Piassa', 'Mobil', 'Menaharya', 'Adis Ketema', 'Hayik dar', 'All Areas'
 ];
 
 // Mock products data (10 products covering all categories and materials)

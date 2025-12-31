@@ -8,7 +8,7 @@ import {
   Mail, Map
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
-import LanguageToggle from '@/components/LanguageToggle';
+//import LanguageToggle from '@/components/LanguageToggle';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import TrustBadges from '@/components/TrustBadges';
 import Testimonials from '@/components/Testimonials';
@@ -118,7 +118,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <ThemeToggle />
-      <LanguageToggle />
+      
       
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-amber-900 via-amber-800 to-amber-700 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 text-white py-20 px-4 overflow-hidden">
