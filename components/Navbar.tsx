@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, ShoppingCart, Phone } from 'lucide-react';
 
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,11 +24,11 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">ኢ</span>
+              <span className="text-white font-bold text-xl">እ</span>
             </div>
             <div>
               <h1 className="text-xl font-bold text-amber-900">Emu Furniture</h1>
-              <p className="text-xs text-amber-600">ኢትዮጵያዊ ብልጽግና</p>
+              <p className="text-xs text-amber-600">ለላቀ ጥራት ወሰን የለንም</p>
             </div>
           </Link>
 
@@ -86,7 +87,7 @@ export default function Navbar() {
                 className="flex items-center justify-center space-x-2 bg-amber-700 text-white px-4 py-3 rounded-lg mt-4"
               >
                 <Phone size={18} />
-                <span>+251 91 123 4567</span>
+                <span>+251 97 259 0743</span>
               </a>
             </div>
           </div>

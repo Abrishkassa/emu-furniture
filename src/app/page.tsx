@@ -162,7 +162,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto py-16 px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
-            {language === 'am' ? 'ለምን ኢሙ ፈርኒቸር እንመርጣለን?' : 'Why Choose Emu Furniture?'}
+            {language === 'am' ? 'ለምን እሙ ፈርኒቸር እንመርጣለን?' : 'Why Choose Emu Furniture?'}
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {language === 'am' 
@@ -177,7 +177,7 @@ export default function Home() {
               <Package className="w-10 h-10 text-amber-700 dark:text-amber-500" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
-              {language === 'am' ? 'በአዲስ አበባ ነጻ መላኪያ' : 'Free Delivery in Addis'}
+              {language === 'am' ? 'በሃዋሳ ነጻ መላኪያ' : 'Free Delivery in Hawassa'}
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
               {language === 'am' ? 'ለ10,000 ብር ከላይ ትዕዛዝ። ማዋቀር ተካትቷል።' : 'For orders over 10,000 ETB. Assembly included.'}
@@ -345,9 +345,9 @@ export default function Home() {
                   <MapPin className="w-6 h-6 text-amber-700 dark:text-amber-500 mr-4 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-800 dark:text-white">{t('location')}</p>
-                    <p className="text-gray-600 dark:text-gray-300">Megenagna, Addis Ababa, Ethiopia</p>
+                    <p className="text-gray-600 dark:text-gray-300">Atote, Hawassa, Ethiopia</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {language === 'am' ? 'ከፍሪንድሺፕ ሆቴል አቅራቢያ' : 'Near Friendship Hotel'}
+                      {language === 'am' ? 'ከአመን ካፈ አቅራቢያ' : 'Near Amen Cafe'}
                     </p>
                   </div>
                 </div>
@@ -369,14 +369,14 @@ export default function Home() {
                   <Phone className="w-6 h-6 text-amber-700 dark:text-amber-500 mr-4 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-800 dark:text-white">{t('contactUs')}</p>
-                    <p className="text-gray-600 dark:text-gray-300">+251 91 123 4567</p>
+                    <p className="text-gray-600 dark:text-gray-300">+251 97 259 0743</p>
                     <p className="text-gray-600 dark:text-gray-300">info@emufurniture.com</p>
                     
                     <div className="mt-4 space-y-3">
                       <div className="flex items-center">
                         <Phone className="w-4 h-4 text-amber-600 mr-2" />
                         <span className="text-sm">{language === 'am' ? 'የግል ምክር:' : 'For private consultation:'}</span>
-                        <span className="ml-2 font-semibold">+251 92 987 6543</span>
+                        <span className="ml-2 font-semibold">+251 972 590 743</span>
                       </div>
                       <div className="flex items-center">
                         <Mail className="w-4 h-4 text-amber-600 mr-2" />
@@ -420,7 +420,7 @@ export default function Home() {
                   {/* Google Maps Embed */}
                   <div className="flex-grow relative">
                     <iframe
-                      src="https://www.google.com/search?q=2FMP%2B954%2C+Hawassa&oq=2FMP%2B954%2C+Hawassa&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigAdIBCDE2MzFqMGo3qAIIsAIB8QVb_8ZIAOGQ4vEFW__GSADhkOI&sourceid=chrome&ie=UTF-8"
+                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126707.22630711363!2d38.40783248355395!3d7.056101249469755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x17b14573a067b82b%3A0xa82c1a9985db8f16!2sHawassa!5e0!3m2!1sen!2set!4v1767183905112!5m2!1sen!2set" 
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
@@ -522,7 +522,7 @@ export default function Home() {
           </div>
           <div className="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
             <p>© {new Date().getFullYear()} Emu Furniture. {language === 'am' ? 'ሁሉም መብቶች የተጠበቁ ናቸው።' : 'All rights reserved.'}</p>
-            <p className="mt-2">{language === 'am' ? 'አዲስ አበባ፣ ኢትዮጵያ | በተ.ማ.ታ. ተመዝግበዋል' : 'Addis Ababa, Ethiopia | VAT Registered'}</p>
+            <p className="mt-2">{language === 'am' ? 'ሃዋሳ፣ ኢትዮጵያ | በተ.ማ.ታ. ተመዝግበዋል' : 'Addis Ababa, Ethiopia | VAT Registered'}</p>
           </div>
         </div>
       </footer>

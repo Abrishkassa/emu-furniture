@@ -47,7 +47,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 3,
-    name: "Thomas Johnson",
+    name: "Thomas Hailu",
     role: {
       en: "Hotel Manager",
       am: "የሆቴል አስተዳዳሪ"

@@ -51,15 +51,15 @@ export default function ShowroomPage() {
     const translations: Record<string, Record<Language, string>> = {
       pageTitle: {
         en: "Emu Furniture Showroom",
-        am: "ኢሙ ፈርኒቸር ሽውራ"
+        am: "እሙ ፈርኒቸር ሽውራ"
       },
       pageSubtitle: {
         en: "Experience Quality & Craftsmanship Firsthand",
         am: "ጥራትን እና የጥበብ ስራን በቀጥታ ይመልከቱ"
       },
       heroDescription: {
-        en: "Visit our flagship showroom in Addis Ababa to touch, feel, and experience our furniture collections. Meet our experts and get personalized design advice.",
-        am: "በአዲስ አበባ የምንገኝበትን ዋና ሽውራችንን ጎብኙ እና ፈርኒቸር ስብስቦቻችንን ይንኩ፣ ይንኩ እና ይለማመዱ። ባለሙያዎቻችንን ያግኙ እና የግል የዲዛይን ምክር ያግኙ።"
+        en: "Visit our flagship showroom in Hawassa to touch, feel, and experience our furniture collections. Meet our experts and get personalized design advice.",
+        am: "በሃዋሳ የምንገኝበትን ዋና ሽውራችንን ጎብኙ እና ፈርኒቸር ስብስቦቻችንን ይንኩ፣ ይንኩ እና ይለማመዱ። ባለሙያዎቻችንን ያግኙ እና የግል የዲዛይን ምክር ያግኙ።"
       },
       locationTitle: {
         en: "Our Showroom Location",
@@ -338,10 +338,10 @@ export default function ShowroomPage() {
                     Emu Furniture Showroom
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Megenagna, Addis Ababa, Ethiopia
+                    Atote, Hawassa, Ethiopia
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    {language === 'am' ? 'ከፍሪንድሺፕ ሆቴል አቅራቢያ' : 'Near Friendship Hotel'}
+                    {language === 'am' ? 'ከአመን ካፈ አቅራቢያ' : 'Near Amen Cafe Hawassa'}
                   </p>
                 </div>
               </div>
@@ -362,7 +362,7 @@ export default function ShowroomPage() {
 
               <div className="space-y-4">
                 <a
-                  href="https://maps.google.com/?q=Emu+Furniture+Megenagna+Addis+Ababa"
+                  href="https://maps.google.com/?q=Emu+Furniture+Atote+Hawassa"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors"
@@ -372,7 +372,7 @@ export default function ShowroomPage() {
                 </a>
                 <div className="grid grid-cols-2 gap-4">
                   <a
-                    href="tel:+251911234567"
+                    href="tel:+251972590743"
                     className="flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-600 dark:border-amber-500 dark:text-amber-500 py-2 rounded-lg font-semibold hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
                   >
                     <Phone className="w-4 h-4" />
@@ -385,7 +385,7 @@ export default function ShowroomPage() {
                           ? 'ሰላም! የሽውራ አቅጣጫ እፈልጋለሁ።' 
                           : 'Hello! I need directions to your showroom.'
                       );
-                      window.open(`https://wa.me/+251911234567?text=${message}`, '_blank');
+                      window.open(`https://wa.me/+251972590743?text=${message}`, '_blank');
                     }}
                     className="flex items-center justify-center gap-2 border-2 border-green-600 text-green-600 py-2 rounded-lg font-semibold hover:bg-green-50 transition-colors"
                   >
@@ -740,12 +740,12 @@ export default function ShowroomPage() {
                 <div className="space-y-6">
                   <div>
                     <h4 className="font-bold text-amber-600 dark:text-amber-500 mb-2">
-                      🚗 {language === 'am' ? 'ከቦሌ በመኪና' : 'From Bole by Car'}
+                      🚗 {language === 'am' ? 'ከቦሌ በመኪና' : 'From Piassa by Car'}
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300">
                       {language === 'am' 
                         ? '15-20 ደቂቃ (ከቦሌ ወደ መገናኛ በሞላ ከዛ ወደ መገናኛ)'
-                        : '15-20 minutes (Take Bole to Megenagna road)'}
+                        : '15-20 minutes (Take Piassa to Atote road)'}
                     </p>
                   </div>
                   <div>
@@ -755,7 +755,7 @@ export default function ShowroomPage() {
                     <p className="text-gray-600 dark:text-gray-300">
                       {language === 'am' 
                         ? 'ከመገናኛ ባቡር ጣቢያ 5 ደቂቃ እግረኛ'
-                        : '5 min walk from Megenagna bus station'}
+                        : '5 min walk from Atote bus station'}
                     </p>
                   </div>
                   <div>
@@ -765,7 +765,7 @@ export default function ShowroomPage() {
                     <p className="text-gray-600 dark:text-gray-300">
                       {language === 'am' 
                         ? '"ኢሙ ፈርኒቸር ሽውራ መገናኛ" ብለው ይንገሩ'
-                        : 'Tell driver "Emu Furniture Showroom Megenagna"'}
+                        : 'Tell driver "Emu Furniture Showroom Atote"'}
                     </p>
                   </div>
                 </div>
@@ -777,7 +777,7 @@ export default function ShowroomPage() {
                 <div className="space-y-4">
                   {[
                     { icon: '🅿️', text: language === 'am' ? 'ነፃ የመኪና ማቆሚያ' : 'Free parking available' },
-                    { icon: '🏨', text: language === 'am' ? 'ከፍሪንድሺፕ ሆቴል አቅራቢያ' : 'Near Friendship Hotel' },
+                    { icon: '🏨', text: language === 'am' ? 'ከፍሪንድሺፕ ሆቴል አቅራቢያ' : 'Near Amen Cafe Hawassa' },
                     { icon: '☕', text: language === 'am' ? 'በርካታ ካፌዎች አጠገብ' : 'Multiple cafes nearby' },
                     { icon: '🛒', text: language === 'am' ? 'ከሱቆች እና ማርኬቶች አቅራቢያ' : 'Close to shops & markets' },
                   ].map((amenity, index) => (

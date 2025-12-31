@@ -14,7 +14,7 @@ export default function TrustBadges({ language = 'en' }: TrustBadgesProps) {
     {
       icon: Truck,
       title: language === 'am' ? "ነጻ መላኪያ" : "Free Delivery",
-      description: language === 'am' ? "በአዲስ አበባ ነጻ መላኪያ" : "Free delivery in Addis Ababa"
+      description: language === 'am' ? "በሃዋሳ ነጻ መላኪያ" : "Free delivery in Hawassa"
     },
     {
       icon: CreditCard,

@@ -620,11 +620,11 @@ export default function ContactPage() {
               </p>
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-2xl font-bold">+251 90 111 2222</div>
+                  <div className="text-2xl font-bold">+251 97 259 0743</div>
                   <div className="text-sm text-red-200">{language === 'am' ? '24/7 ይጠራ' : 'Call 24/7'}</div>
                 </div>
                 <a
-                  href="tel:+251901112222"
+                  href="tel:+251972590743"
                   className="bg-white text-red-600 hover:bg-red-50 px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4" />
@@ -660,10 +660,10 @@ export default function ContactPage() {
                       Emu Furniture Headquarters
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300">
-                      Megenagna, Addis Ababa, Ethiopia
+                      Atote, Hawassa, Ethiopia
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {language === 'am' ? 'ከፍሪንድሺፕ ሆቴል አቅራቢያ' : 'Near Friendship Hotel'}
+                      {language === 'am' ? 'ከአመን ካፈ አቅራቢያ' : 'Near Amen Cafe'}
                     </p>
                   </div>
                 </div>
@@ -686,21 +686,21 @@ export default function ContactPage() {
                 {/* Google Map */}
                 <div className="rounded-xl overflow-hidden h-64">
                   <iframe
-                    //src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.573710286464!2d38.77183407564615!3d9.022219488247652!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f0f8e1c21f%3A0x40e59d6592e8edbd!2sMegenagna%2C%20Addis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="absolute inset-0"
-                    title="Emu Furniture Location"
-                  />
+                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126707.22630711363!2d38.40783248355395!3d7.056101249469755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x17b14573a067b82b%3A0xa82c1a9985db8f16!2sHawassa!5e0!3m2!1sen!2set!4v1767183905112!5m2!1sen!2set" 
+                      width="100%"
+                      height="68%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="absolute inset-0"
+                      title="Emu Furniture Location"
+                    />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <a
-                    href="https://maps.google.com/?q=Emu+Furniture+Megenagna+Addis+Ababa"
+                    href="https://maps.google.com/?q=Emu+Furniture+Atote+Hawassa"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white py-3 rounded-lg font-medium transition-colors"
@@ -715,7 +715,7 @@ export default function ContactPage() {
                           ? 'ሰላም! የሽውራ አቅጣጫ እፈልጋለሁ።'
                           : 'Hello! I need directions to your showroom.'
                       );
-                      window.open(`https://wa.me/+251911234567?text=${message}`, '_blank');
+                      window.open(`https://wa.me/+251972590743?text=${message}`, '_blank');
                     }}
                     className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition-colors"
                   >
@@ -805,7 +805,7 @@ export default function ContactPage() {
               {
                 icon: Truck,
                 title: language === 'am' ? "ነፃ መላኪያ" : "Free Delivery",
-                description: language === 'am' ? "በአዲስ አበባ" : "In Addis Ababa"
+                description: language === 'am' ? "በሃዋሳ" : "In Hawassa"
               },
               {
                 icon: HeadphonesIcon,
@@ -845,8 +845,8 @@ export default function ContactPage() {
                   ? 'የመላኪያ ጊዜ ምን ያህል ይፈጅሃል?' 
                   : 'How long does delivery take?',
                 a: language === 'am' 
-                  ? 'በአዲስ አበባ ከ3-5 የስራ ቀናት፣ ከከተማ ውጭ ከ7-14 የስራ ቀናት። በትእዛዝ ምርቶች ከ6-8 ሳምንታት።' 
-                  : 'In Addis Ababa: 3-5 business days. Outside city: 7-14 business days. Custom orders: 6-8 weeks.'
+                  ? 'በአዋሳ ከ3-5 የስራ ቀናት፣ ከከተማ ውጭ ከ7-14 የስራ ቀናት። በትእዛዝ ምርቶች ከ6-8 ሳምንታት።' 
+                  : 'In Hawassa: 3-5 business days. Outside city: 7-14 business days. Custom orders: 6-8 weeks.'
               },
               {
                 q: language === 'am' 
@@ -903,7 +903,7 @@ export default function ContactPage() {
               className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-700 dark:hover:bg-amber-600 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
             >
               <Phone className="w-6 h-6" />
-              +251 91 123 4567
+              +251 97 259 0743
             </a>
             <button
               onClick={() => {
@@ -912,7 +912,7 @@ export default function ContactPage() {
                     ? 'ሰላም! ለነፃ ምክር እፈልጋለሁ።'
                     : 'Hello! I would like a free consultation.'
                 );
-                window.open(`https://wa.me/+251911234567?text=${message}`, '_blank');
+                window.open(`https://wa.me/+251972590743?text=${message}`, '_blank');
               }}
               className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
             >
