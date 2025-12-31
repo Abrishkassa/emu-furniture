@@ -5,7 +5,25 @@ const ImageProcessor = require('../utils/imageProcessor');
 const path = require('path');
 const fs = require('fs');
 
+// CREATE ROUTER FIRST!
 const router = express.Router();
+
+// Then add your test routes
+router.get('/test', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'Upload route is working',
+    timestamp: new Date().toISOString()
+  });
+});
+
+router.post('/test', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'POST route is working',
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Helper function to get full URL
 const getFullUrl = (req, filePath) => {
@@ -322,4 +340,5 @@ router.post('/bulk/delete', requireAuth, (req, res) => {
   }
 });
 
+// Don't forget to export the router!
 module.exports = router;

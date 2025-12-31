@@ -45,7 +45,7 @@ export default function NewProductPage() {
     // Specifications
     material: '',
     color: '',
-    dimensions: '',
+    // REMOVED: dimensions: '',
     
     // Stock & Availability
     inStock: true,
@@ -148,19 +148,41 @@ export default function NewProductPage() {
     setLoading(true);
     
     try {
-      // Prepare data for API
+      // Prepare data for API - EXPLICITLY list fields, don't use spread
       const productData = {
-        ...formData,
+        // Basic Information
+        nameEn: formData.nameEn,
+        nameAm: formData.nameAm || '',
+        descriptionEn: formData.descriptionEn || '',
+        descriptionAm: formData.descriptionAm || '',
         price: parseFloat(formData.price),
+        currency: formData.currency,
+        
+        // Category & Type
+        categoryEn: formData.categoryEn,
+        categoryAm: formData.categoryAm || formData.categoryEn,
+        
+        // Specifications
+        material: formData.material || '',
+        color: formData.color || '',
+        // DO NOT INCLUDE dimensions
+        
+        // Stock & Availability
+        inStock: formData.inStock,
         stockQuantity: parseInt(formData.stockQuantity) || 0,
-        // Images are already URLs from the ImageUpload component
+        estimatedDelivery: formData.estimatedDelivery,
+        
+        // Marketing & Display
+        isPopular: formData.isPopular,
+        isFeatured: formData.isFeatured,
+        
+        // Media & Tags
         images: formData.images,
-        // Ensure tags are properly formatted
         tags: Array.isArray(formData.tags) ? formData.tags : 
               (typeof formData.tags === 'string' ? [formData.tags] : [])
       };
       
-      console.log('Sending product data:', productData);
+      console.log('Sending product data (NO dimensions):', productData);
       
       const response = await fetch('http://localhost:5000/api/admin/products', {
         method: 'POST',
@@ -188,7 +210,7 @@ export default function NewProductPage() {
           categoryAm: 'የመቀመጫ ቤት',
           material: '',
           color: '',
-          dimensions: '',
+          // NO dimensions here
           inStock: true,
           stockQuantity: '1',
           estimatedDelivery: '1-2 weeks',
@@ -462,25 +484,8 @@ export default function NewProductPage() {
               </div>
             </div>
 
-            {/* Dimensions */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Dimensions
-              </label>
-              <div className="flex items-center">
-                <div className="mr-3">
-                  <Ruler className="w-5 h-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="dimensions"
-                  value={formData.dimensions}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
-                  placeholder="e.g., 120cm x 60cm x 45cm"
-                />
-              </div>
-            </div>
+            {/* Empty column to maintain layout - REMOVED DIMENSIONS */}
+            <div></div>
           </div>
         </div>
 

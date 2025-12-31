@@ -38,7 +38,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Living Room',
     categoryAm: 'የመቀመጫ ቤት',
-    images: ['/products/sofa-1.jpg', '/products/sofa-2.jpg'],
+    images: ['/uploads/products/sofa-1.jpg', '/uploads/products/sofa-2.jpg'],
     length: 220,
     width: 90,
     height: 85,
@@ -66,7 +66,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Office',
     categoryAm: 'ቢሮ',
-    images: ['/products/desk-1.jpg'],
+    images: ['/uploads/products/desk-1.jpg'],
     length: 160,
     width: 80,
     height: 75,
@@ -94,7 +94,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Bedroom',
     categoryAm: 'የመኝታ ቤት',
-    images: ['/products/bed-1.jpg', '/products/bed-2.jpg'],
+    images: ['/uploads/products/bed-1.jpg', '/uploads/products/bed-2.jpg'],
     length: 210,
     width: 180,
     height: 110,
@@ -122,7 +122,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Dining Room',
     categoryAm: 'ምግብ ቤት',
-    images: ['/products/dining-1.jpg'],
+    images: ['/uploads/products/dining-1.jpg'],
     length: 180,
     width: 100,
     height: 75,
@@ -150,7 +150,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Outdoor',
     categoryAm: 'የቤት ውጫዊ',
-    images: ['/products/outdoor-1.jpg'],
+    images: ['/uploads/products/outdoor-1.jpg'],
     length: 70,
     width: 70,
     height: 85,
@@ -178,7 +178,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Living Room',
     categoryAm: 'የመቀመጫ ቤት',
-    images: ['/products/recliner-1.jpg'],
+    images: ['/uploads/products/recliner-1.jpg'],
     length: 95,
     width: 95,
     height: 105,
@@ -206,7 +206,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Living Room',
     categoryAm: 'የመቀመጫ ቤት',
-    images: ['/products/coffee-table-1.jpg'],
+    images: ['/uploads/products/coffee-table-1.jpg'],
     length: 120,
     width: 60,
     height: 45,
@@ -234,7 +234,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Custom Orders',
     categoryAm: 'ብጁ ትዕዛዞች',
-    images: ['/products/wardrobe-1.jpg'],
+    images: ['/uploads/products/wardrobe-1.jpg'],
     length: 240,
     width: 60,
     height: 220,
@@ -262,7 +262,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Living Room',
     categoryAm: 'የመቀመጫ ቤት',
-    images: ['/products/sectional-1.jpg'],
+    images: ['/uploads/products/sectional-1.jpg'],
     length: 280,
     width: 180,
     height: 85,
@@ -290,7 +290,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     currency: 'ETB',
     categoryEn: 'Office',
     categoryAm: 'ቢሮ',
-    images: ['/products/bookshelf-1.jpg'],
+    images: ['/uploads/products/bookshelf-1.jpg'],
     length: 120,
     width: 40,
     height: 180,
@@ -359,6 +359,7 @@ type TransformedProduct = {
   deliveryZones: string[];
   images: string[];
   estimatedWeeks: number | null;
+  imageUrls: string[]; // Add this field for proper image URLs
 };
 
 export default function ShopPage() {
@@ -412,6 +413,31 @@ export default function ShopPage() {
     return null;
   };
 
+  // Helper function to construct proper image URLs
+  const constructImageUrls = (imagePaths: string[]): string[] => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    
+    return imagePaths.map(imagePath => {
+      // If it's already a full URL (starts with http), return as is
+      if (imagePath.startsWith('http')) {
+        return imagePath;
+      }
+      
+      // If it starts with /uploads, construct full URL
+      if (imagePath.startsWith('/uploads/')) {
+        return `${apiUrl}${imagePath}`;
+      }
+      
+      // If it's just a filename, assume it's in the uploads/products folder
+      if (!imagePath.startsWith('/') && !imagePath.includes('http')) {
+        return `${apiUrl}/uploads/products/${imagePath}`;
+      }
+      
+      // For any other case, try to construct the URL
+      return `${apiUrl}${imagePath.startsWith('/') ? imagePath : `/${imagePath}`}`;
+    });
+  };
+
   // Transform API products to frontend format
   const transformProducts = (apiProducts: ApiProduct[], sourceLanguage: 'en' | 'am'): TransformedProduct[] => {
     return apiProducts.map(product => {
@@ -420,6 +446,9 @@ export default function ShopPage() {
       const safeImages = Array.isArray(product.images) ? product.images : [];
       const safeMaterial = product.material || 'Unknown';
       const safeUnit = product.unit || 'cm';
+      
+      // Construct proper image URLs
+      const imageUrls = constructImageUrls(safeImages);
       
       // FIX: Use safeIncludes for custom check
       const isCustom = safeTags.includes('custom') || 
@@ -443,7 +472,8 @@ export default function ShopPage() {
         isPopular: Boolean(product.isPopular),
         isCustom: Boolean(isCustom),
         deliveryZones: getDeliveryZonesFromProduct(product),
-        images: safeImages.length > 0 ? safeImages : ['/products/default.jpg'],
+        images: imageUrls.length > 0 ? imageUrls : ['/products/default.jpg'],
+        imageUrls: imageUrls, // Store both for backward compatibility
         estimatedWeeks: extractEstimatedWeeks(product.estimatedDelivery)
       };
     });
