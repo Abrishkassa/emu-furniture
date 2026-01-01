@@ -323,7 +323,7 @@ export default function NewProductPage() {
                 name="nameEn"
                 value={formData.nameEn}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
                 placeholder="e.g., Traditional Coffee Table"
                 required
               />
@@ -339,7 +339,7 @@ export default function NewProductPage() {
                 name="nameAm"
                 value={formData.nameAm}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
                 placeholder="e.g., ባህላዊ የቡና ጠረጴዛ"
               />
             </div>
@@ -358,7 +358,7 @@ export default function NewProductPage() {
                   name="price"
                   value={formData.price}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
                   placeholder="0.00"
                   min="0"
                   step="0.01"
@@ -376,7 +376,7 @@ export default function NewProductPage() {
                 name="categoryEn"
                 value={formData.categoryEn}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900"
               >
                 {categories.map(category => (
                   <option key={category} value={category}>
@@ -397,7 +397,7 @@ export default function NewProductPage() {
               value={formData.descriptionEn}
               onChange={handleInputChange}
               rows={3}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
               placeholder="Describe the product features, quality, and benefits..."
             />
           </div>
@@ -411,7 +411,7 @@ export default function NewProductPage() {
               value={formData.descriptionAm}
               onChange={handleInputChange}
               rows={3}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
               placeholder="የምርቱን ባህሪያት፣ ጥራት እና ጥቅሞች ይግለጹ..."
             />
           </div>
@@ -437,7 +437,7 @@ export default function NewProductPage() {
                   name="material"
                   value={formData.material}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors appearance-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors appearance-none bg-white text-gray-900"
                 >
                   <option value="">Select material</option>
                   {materials.map(material => (
@@ -458,7 +458,7 @@ export default function NewProductPage() {
                   name="material"
                   value={formData.material}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
                   placeholder="Or type custom material..."
                 />
               </div>
@@ -478,7 +478,7 @@ export default function NewProductPage() {
                   name="color"
                   value={formData.color}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
                   placeholder="e.g., Brown, Black, Natural"
                 />
               </div>
@@ -510,7 +510,7 @@ export default function NewProductPage() {
                 value={formData.stockQuantity}
                 onChange={handleInputChange}
                 min="0"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900"
               />
             </div>
 
@@ -524,7 +524,7 @@ export default function NewProductPage() {
                 name="estimatedDelivery"
                 value={formData.estimatedDelivery}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
                 placeholder="e.g., 3-5 business days"
               />
             </div>
@@ -672,7 +672,7 @@ export default function NewProductPage() {
               <input
                 type="text"
                 id="tagInput"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500"
                 placeholder="e.g., traditional, wooden, luxury"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
