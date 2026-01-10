@@ -19,23 +19,38 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
+      // Use localhost:5000 since that's where your backend is running
       const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email, password })
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include', // Important for cookies
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password })
       });
 
+      console.log('Login response status:', res.status);
+      
       const data = await res.json();
+      console.log('Login response data:', data);
 
       if (data.success) {
+        // Store token in localStorage for frontend use
+        if (data.token) {
+          localStorage.setItem('adminToken', data.token);
+          localStorage.setItem('adminUser', JSON.stringify(data.user));
+        }
+        
+        // Redirect to admin dashboard
         router.push('/admin/dashboard');
         router.refresh();
       } else {
-        setError(data.error || 'Login failed');
+        setError(data.error || 'Login failed. Please check your credentials.');
       }
     } catch (err) {
-      setError('Network error. Please check your connection.');
+      console.error('Login error:', err);
+      setError('Cannot connect to server. Make sure backend is running on localhost:5000');
     } finally {
       setLoading(false);
     }
@@ -58,7 +73,12 @@ export default function AdminLoginPage() {
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
               <AlertCircle className="w-5 h-5 text-red-500 mr-3" />
-              <p className="text-red-700 text-sm">{error}</p>
+              <div>
+                <p className="text-red-700 text-sm font-medium">{error}</p>
+                <p className="text-red-500 text-xs mt-1">
+                  Backend: localhost:5000 | Make sure server is running
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -134,22 +154,45 @@ export default function AdminLoginPage() {
             </button>
           </div>
 
-          {/* Demo credentials */}
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <h3 className="text-sm font-medium text-amber-800 mb-2">Demo Credentials</h3>
-            <div className="space-y-1 text-xs text-amber-700">
-              <p>Email: <code className="bg-amber-100 px-2 py-1 rounded">admin@emufurniture.com</code></p>
-              <p>Password: <code className="bg-amber-100 px-2 py-1 rounded">password123</code></p>
+          {/* Debug info and credentials */}
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 className="text-sm font-medium text-blue-800 mb-2">Debug Information</h3>
+              <div className="space-y-1 text-xs text-blue-700">
+                <p>Backend URL: <code className="bg-blue-100 px-2 py-1 rounded">http://localhost:5000</code></p>
+                <p>Route: <code className="bg-blue-100 px-2 py-1 rounded">/api/auth/login</code></p>
+                <p>Make sure backend is running and CORS is configured</p>
+              </div>
+            </div>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <h3 className="text-sm font-medium text-amber-800 mb-2">Test Credentials</h3>
+              <div className="space-y-1 text-xs text-amber-700">
+                <p>Email: <code className="bg-amber-100 px-2 py-1 rounded">admin@emufurniture.com</code></p>
+                <p>Password: <code className="bg-amber-100 px-2 py-1 rounded">password123</code></p>
+                <p className="text-xs mt-2">Make sure this user exists in your database</p>
+              </div>
             </div>
           </div>
 
+          {/* Troubleshooting tips */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h3 className="text-sm font-medium text-gray-800 mb-2">Troubleshooting Tips</h3>
+            <ul className="text-xs text-gray-600 space-y-1">
+              <li>• Check if backend is running on port 5000</li>
+              <li>• Verify user exists in database</li>
+              <li>• Check browser console for CORS errors</li>
+              <li>• Test backend route directly: <a href="http://localhost:5000/api/auth/test" target="_blank" className="text-amber-600 hover:underline">/api/auth/test</a></li>
+            </ul>
+          </div>
+
           {/* Back to store */}
-          <div className="text-center">
+          <div className="text-center pt-4">
             <Link
               href="/"
-              className="text-sm text-amber-600 hover:text-amber-700"
+              className="text-sm text-amber-600 hover:text-amber-700 font-medium"
             >
-              ← Back to store
+              ← Back to Emu Furniture Store
             </Link>
           </div>
         </form>
