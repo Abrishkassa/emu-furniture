@@ -11,7 +11,6 @@ import {
   Settings,
   LogOut,
   Menu,
-  X,
   Home
 } from 'lucide-react';
 
@@ -26,6 +25,9 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
 
+  // Check if current page is login page
+  const isLoginPage = pathname === '/admin/login';
+
   const navigation = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Products', href: '/admin/products', icon: Package },
@@ -35,27 +37,44 @@ export default function AdminLayout({
   ];
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/api/auth/me', {
-        credentials: 'include'
-      });
-      
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data.user);
-      } else {
-        router.push('/admin/login');
-      }
-    } catch (error) {
-      router.push('/admin/login');
-    } finally {
+    // Don't check auth on login page
+    if (!isLoginPage) {
+      checkAuth();
+    } else {
       setLoading(false);
     }
-  };
+  }, [isLoginPage]); // Fixed: Added isLoginPage to dependency array
+
+  const checkAuth = async () => {
+  try {
+    console.log('🔐 Checking authentication at /api/auth/check...');
+    const res = await fetch('http://localhost:5000/api/auth/check', { // CORRECT
+      credentials: 'include'
+    });
+    
+    console.log('Auth check status:', res.status);
+    
+    if (res.ok) {
+      const data = await res.json();
+      console.log('Auth check response:', data);
+      
+      if (data.authenticated) {
+        setUser(data.user);
+      } else {
+        console.log('Not authenticated, redirecting to login');
+        router.push('/admin/login');
+      }
+    } else {
+      console.log('Auth check failed, redirecting to login');
+      router.push('/admin/login');
+    }
+  } catch (error) {
+    console.error('Auth check error:', error);
+    router.push('/admin/login');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleLogout = async () => {
     await fetch('http://localhost:5000/api/auth/logout', {
@@ -73,6 +92,16 @@ export default function AdminLayout({
     );
   }
 
+  // For login page, render without sidebar
+  if (isLoginPage) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
+        {children}
+      </div>
+    );
+  }
+
+  // For other admin pages, render with sidebar
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile sidebar backdrop */}
