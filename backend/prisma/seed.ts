@@ -1,4 +1,5 @@
-import { PrismaClient, Role, OrderStatus, PaymentStatus, BlogCategory, PostStatus, ContactDepartment, ContactMethod, ContactStatus, CustomOrderCategory, CustomOrderTimeline, CustomOrderStatus, CommunicationType, VisitType, BookingStatus } from '@prisma/client'
+const { PrismaClient, Role, OrderStatus, PaymentStatus, BlogCategory, PostStatus, ContactDepartment, ContactMethod, ContactStatus, CustomOrderCategory, CustomOrderTimeline, CustomOrderStatus, CommunicationType, VisitType, BookingStatus } = require('@prisma/client')
+const bcrypt = require('bcrypt')
 
 const prisma = new PrismaClient()
 
@@ -20,6 +21,19 @@ async function main() {
   
   console.log('🧹 Cleared all existing data')
 
+  // Generate proper bcrypt hashes for passwords
+  console.log('🔐 Generating password hashes...')
+  const saltRounds = 10
+  const adminPassword = 'password123'
+  const userPassword = 'password123' // Same password for all users in seed
+  
+  // Hash passwords
+  const hashedAdminPassword = await bcrypt.hash(adminPassword, saltRounds)
+  const hashedUserPassword = await bcrypt.hash(userPassword, saltRounds)
+  
+  console.log('Admin hash generated:', hashedAdminPassword.substring(0, 30) + '...')
+  console.log('User hash generated:', hashedUserPassword.substring(0, 30) + '...')
+
   // 1. CREATE USERS
   const users = await prisma.user.createMany({
     data: [
@@ -28,30 +42,61 @@ async function main() {
         name: 'Admin User',
         phone: '+251992022056',
         role: Role.ADMIN,
-        password: '$2a$10$K7Vq3vL5pP7sZ5Z5Z5Z5Z.5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z', // hashed "password123"
+        password: hashedAdminPassword,
       },
       {
         email: 'customer@example.com',
         name: 'abriham kassa',
         phone: '+251972590743',
         role: Role.CUSTOMER,
-        password: '$2a$10$K7Vq3vL5pP7sZ5Z5Z5Z5Z.5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z',
+        password: hashedUserPassword,
       },
       {
         email: 'staff@emufurniture.com',
         name: 'Staff Member',
         phone: '+251933333333',
         role: Role.STAFF,
-        password: '$2a$10$K7Vq3vL5pP7sZ5Z5Z5Z5Z.5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z',
+        password: hashedUserPassword,
       },
     ],
   })
   console.log(`👥 Created ${users.count} users`)
 
-  // Get user IDs
-  const adminUser = await prisma.user.findFirst({ where: { email: 'admin@emufurniture.com' } })
-  const customerUser = await prisma.user.findFirst({ where: { email: 'customer@example.com' } })
-  const staffUser = await prisma.user.findFirst({ where: { email: 'staff@emufurniture.com' } })
+  // Verify the hashes work
+  console.log('\n🔍 Verifying password hashes...')
+  const adminUser = await prisma.user.findFirst({ 
+    where: { email: 'admin@emufurniture.com' },
+    select: {
+      id: true,
+      email: true,
+      password: true,
+      name: true,
+      role: true
+    }
+  })
+  
+  if (adminUser && adminUser.password) {
+    const passwordCheck = await bcrypt.compare(adminPassword, adminUser.password)
+    console.log('Admin password verification:', passwordCheck ? '✅ SUCCESS' : '❌ FAILED')
+    
+    if (!passwordCheck) {
+      console.log('Admin password hash:', adminUser.password)
+      console.log('Expected password:', adminPassword)
+    }
+  } else {
+    console.log('❌ Admin user not found or password is null')
+  }
+
+  // Get user IDs with proper selection
+  const customerUser = await prisma.user.findFirst({ 
+    where: { email: 'customer@example.com' },
+    select: { id: true }
+  })
+  
+  const staffUser = await prisma.user.findFirst({ 
+    where: { email: 'staff@emufurniture.com' },
+    select: { id: true, name: true }
+  })
 
   // 2. CREATE ADDRESSES
   if (customerUser) {
@@ -196,10 +241,22 @@ async function main() {
   console.log(`🛋️ Created ${products.count} products`)
 
   // Get product IDs
-  const sofaProduct = await prisma.product.findFirst({ where: { nameEn: 'Ethiopian Traditional Sofa' } })
-  const tableProduct = await prisma.product.findFirst({ where: { nameEn: 'Modern Coffee Table' } })
-  const bedProduct = await prisma.product.findFirst({ where: { nameEn: 'King Size Bed' } })
-  const chairProduct = await prisma.product.findFirst({ where: { nameEn: 'Dining Chair Set' } })
+  const sofaProduct = await prisma.product.findFirst({ 
+    where: { nameEn: 'Ethiopian Traditional Sofa' },
+    select: { id: true }
+  })
+  const tableProduct = await prisma.product.findFirst({ 
+    where: { nameEn: 'Modern Coffee Table' },
+    select: { id: true }
+  })
+  const bedProduct = await prisma.product.findFirst({ 
+    where: { nameEn: 'King Size Bed' },
+    select: { id: true }
+  })
+  const chairProduct = await prisma.product.findFirst({ 
+    where: { nameEn: 'Dining Chair Set' },
+    select: { id: true }
+  })
 
   // 4. CREATE CART ITEMS
   if (customerUser && sofaProduct && tableProduct) {
@@ -326,7 +383,7 @@ async function main() {
         titleEn: 'Sustainable Wood Sourcing',
         titleAm: 'ተጠቃሚ የእንጨት ምንጭ',
         excerptEn: 'How we ensure sustainable and ethical wood sourcing for our furniture.',
-        excerptAm: 'ለእቃችን ተጠቃሚ እና ሥነ ምግባራዊ የእንጨት ምንጭ እንዴት እንደምናረጋግጥ።',
+        excerptAm: 'ለእቃችን ተጠቃሚ እና ሥነ ᝌግባራዊ የእንጨት ምንጭ እንዴት እንደምናረጋግጥ።',
         contentEn: 'Full article content here... Sustainability is at the core of our values...',
         contentAm: 'ሙሉ የጽሁፍ ይዘት እዚህ ላይ... ተጠቃሚነት በእሴቶቻችን ማዕከል ላይ ነው...',
         author: 'Kaleb Assefa',
@@ -395,7 +452,7 @@ async function main() {
   console.log(`📞 Created ${contacts.count} contact submissions`)
 
   // 8. CREATE CUSTOM ORDERS
-  if (staffUser) {
+  if (staffUser && staffUser.name) {
     const customOrder = await prisma.customOrder.create({
       data: {
         customerName: 'Daniel Girma',
@@ -465,7 +522,11 @@ async function main() {
   })
   console.log(`📅 Created ${bookings.count} showroom bookings`)
 
-  console.log('✅ Seed completed successfully! All tables populated.')
+  console.log('\n✅ Seed completed successfully! All tables populated.')
+  console.log('\n📋 Login Credentials:')
+  console.log('   Admin: admin@emufurniture.com / password123')
+  console.log('   Staff: staff@emufurniture.com / password123')
+  console.log('   Customer: customer@example.com / password123')
 }
 
 main()
