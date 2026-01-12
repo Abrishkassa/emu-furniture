@@ -522,7 +522,7 @@ export default function Home() {
           </div>
           <div className="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
             <p>© {new Date().getFullYear()} Emu Furniture. {language === 'am' ? 'ሁሉም መብቶች የተጠበቁ ናቸው።' : 'All rights reserved.'}</p>
-            <p className="mt-2">{language === 'am' ? 'ሃዋሳ፣ ኢትዮጵያ | በተ.ማ.ታ. ተመዝግበዋል' : 'Addis Ababa, Ethiopia | VAT Registered'}</p>
+            <p className="mt-2">{language === 'am' ? 'ሃዋሳ፣ ኢትዮጵያ | በተ.ማ.ታ. ተመዝግበዋል' : 'Hawassa,Sidama, Ethiopia | VAT Registered'}</p>
           </div>
         </div>
       </footer>
