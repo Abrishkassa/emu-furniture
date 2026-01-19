@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Emu Furniture - Ethiopian Craftsmanship',
   description: 'Modern furniture with Ethiopian craftsmanship. Custom orders, showroom visits, and delivery in Hawassa.',
+  icons: {
+    icon: '/emu.png', 
+  },
 }
 
 export default function RootLayout({
