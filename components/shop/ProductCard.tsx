@@ -52,7 +52,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
   };
 
   const handleReserve = () => {
-    const whatsappNumber = '+251911234567';
+    const whatsappNumber = '+251993449447';
     const message = encodeURIComponent(
       `Hello! I'm interested in reserving: ${product.name_en}\nPrice: ${formatPrice(product.price)}\n\nCan you help me with this?`
     );

@@ -29,14 +29,18 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">እ</span>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-amber-900 dark:text-amber-500">Emu Furniture</h1>
-              <p className="text-xs text-amber-600 dark:text-amber-400">ለላቀ ጥራት ወሰን የለንም</p>
-            </div>
-          </Link>
+  <div className="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center overflow-hidden">
+    <img 
+      src="/emu.png" 
+      alt="Emu Furniture Logo"
+      className="w-full h-full object-cover"
+    />
+  </div>
+  <div>
+    <h1 className="text-xl font-bold text-amber-900 dark:text-amber-500">Emu Furniture</h1>
+    <p className="text-xs text-amber-600 dark:text-amber-400">ለላቀ ጥራት ወሰን የለንም</p>
+  </div>
+</Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -63,7 +67,7 @@ export default function Navbar() {
             </button>
             
             <a
-              href="tel:+251911234567"
+              href="tel:+251993449447"
               className="hidden md:flex items-center space-x-2 bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 dark:bg-amber-600 dark:hover:bg-amber-700 transition"
             >
               <Phone size={18} />
@@ -119,7 +123,7 @@ export default function Navbar() {
                 className="flex items-center justify-center space-x-2 bg-amber-700 text-white px-4 py-3 rounded-lg mt-2"
               >
                 <Phone size={18} />
-                <span>+251 97 259 0743</span>
+                <span>+251 993 449 447</span>
               </a>
             </div>
           </div>

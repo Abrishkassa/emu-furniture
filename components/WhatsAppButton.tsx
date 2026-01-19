@@ -19,7 +19,7 @@ export default function WhatsAppButton({
   className = ""
 }: WhatsAppButtonProps) {
   
-  const whatsappNumber = '+251972590743'; // Replace with actual number
+  const whatsappNumber = '+251993449447'; 
   
   const createMessage = () => {
     if (productName && price) {
