@@ -288,7 +288,7 @@ export default function CustomOrdersPage() {
       Additional Notes: ${formData.additionalNotes}
       Please contact me!`;
     
-    const whatsappUrl = `https://wa.me/+251972590743?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/+2519993449447?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -473,7 +473,7 @@ export default function CustomOrdersPage() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                    placeholder={language === 'am' ? '+251 91 234 5678' : '+251 91 234 5678'}
+                    placeholder={language === 'am' ? '+251 93 44 9447' : '+251 93 44 9447'}
                   />
                 </div>
               </div>
@@ -716,10 +716,10 @@ export default function CustomOrdersPage() {
               {language === 'am' ? 'ወዲያውኑ ይደውሉ' : 'Start a Conversation'}
             </button>
             <a
-              href="tel:+251911234567"
+              href="tel:+251 93 44 9447"
               className="bg-transparent border-2 border-amber-600 text-amber-600 dark:border-amber-500 dark:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 px-10 py-4 rounded-lg text-lg font-semibold transition-all duration-300"
             >
-              {language === 'am' ? 'ይደውሉ: +251 91 123 4567' : 'Call: +251 91 123 4567'}
+              {language === 'am' ? 'ይደውሉ: +251 93 44 9447' : 'Call: +251 93 44 9447'}
             </a>
           </div>
         </div>
