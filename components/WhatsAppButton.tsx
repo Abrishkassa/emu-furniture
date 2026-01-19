@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 interface WhatsAppButtonProps {
   productName?: string;
-  price?: number;
+  price?: number | string;
   isReserveButton?: boolean;
   language?: 'en' | 'am';
   className?: string;

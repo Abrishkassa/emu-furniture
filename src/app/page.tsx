@@ -26,7 +26,7 @@ interface Product {
     en: string;
     am: string;
   };
-  price: number;
+   price: number | string;
   currency: string;
   category: {
     en: string;
@@ -35,6 +35,8 @@ interface Product {
   rating: number;
   isPopular: boolean;
   estimatedDelivery: string;
+  image?: string; 
+  images?: string[];
 }
 
 export default function Home() {
@@ -51,14 +53,14 @@ export default function Home() {
       {
         id: 1,
         name: {
-          en: "Traditional Ethiopian Sofa",
+          en: "new modern sofa",
           am: "ባሕላዊ ኢትዮጵያዊ ሶፋ"
         },
         description: {
           en: "Hand-carved wooden sofa with premium fabric",
           am: "በእጅ የተጠረቀ የእንጨት ሶፋ ከልቅሶ ጨርቅ ጋር"
         },
-        price: 25000,
+        price: "*****",
         currency: "ETB",
         category: {
           en: "Sofa",
@@ -66,19 +68,20 @@ export default function Home() {
         },
         rating: 4.8,
         isPopular: true,
-        estimatedDelivery: "7-10 days"
+        estimatedDelivery: "7-10 days",
+        image: "/emusofa.png"
       },
       {
         id: 2,
         name: {
-          en: "Modern Coffee Table",
+          en: "new bedside table",
           am: "ዘመናዊ የቡና ጠረጴዛ"
         },
         description: {
           en: "Glass and wood combination",
           am: "መስታወት እና እንጨት ጥምረት"
         },
-        price: 8000,
+        price: "*****",
         currency: "ETB",
         category: {
           en: "Table",
@@ -86,19 +89,20 @@ export default function Home() {
         },
         rating: 4.5,
         isPopular: true,
-        estimatedDelivery: "5-7 days"
+        estimatedDelivery: "5-7 days",
+        image: "/bedside-table.png"
       },
       {
         id: 3,
         name: {
-          en: "Executive Office Chair",
+          en: " Office Chair",
           am: "የዳይሬክተር የቢሮ መቀመጫ"
         },
         description: {
           en: "Ergonomic design with leather upholstery",
           am: "ኤርጎኖሚክ ዲዛይን ከቆዳ ሽፋን ጋር"
         },
-        price: 12000,
+        price: "*****",
         currency: "ETB",
         category: {
           en: "Chair",
@@ -106,7 +110,8 @@ export default function Home() {
         },
         rating: 4.9,
         isPopular: true,
-        estimatedDelivery: "3-5 days"
+        estimatedDelivery: "3-5 days",
+        image: "/chair.png"
       },
     ];
 
@@ -148,7 +153,7 @@ export default function Home() {
               <div className="text-amber-200">{t('designs')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold">10+</div>
+              <div className="text-3xl font-bold">30+</div>
               <div className="text-amber-200">{t('yearsExperience')}</div>
             </div>
           </div>
@@ -369,19 +374,19 @@ export default function Home() {
                   <Phone className="w-6 h-6 text-amber-700 dark:text-amber-500 mr-4 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-800 dark:text-white">{t('contactUs')}</p>
-                    <p className="text-gray-600 dark:text-gray-300">+251 97 259 0743</p>
-                    <p className="text-gray-600 dark:text-gray-300">info@emufurniture.com</p>
+                    <p className="text-gray-600 dark:text-gray-300">+251 99 344 9447</p>
+                    <p className="text-gray-600 dark:text-gray-300">emufurniture1@gmail.com</p>
                     
                     <div className="mt-4 space-y-3">
                       <div className="flex items-center">
                         <Phone className="w-4 h-4 text-amber-600 mr-2" />
                         <span className="text-sm">{language === 'am' ? 'የግል ምክር:' : 'For private consultation:'}</span>
-                        <span className="ml-2 font-semibold">+251 972 590 743</span>
+                        <span className="ml-2 font-semibold">+251 99 344 9447</span>
                       </div>
                       <div className="flex items-center">
                         <Mail className="w-4 h-4 text-amber-600 mr-2" />
                         <span className="text-sm">{language === 'am' ? 'የግዥ ድጋፍ:' : 'Sales support:'}</span>
-                        <span className="ml-2 font-semibold">sales@emufurniture.com</span>
+                        <span className="ml-2 font-semibold">emufurniture1@gmail.com</span>
                       </div>
                     </div>
                     
