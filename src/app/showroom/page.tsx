@@ -107,8 +107,8 @@ export default function ShowroomPage() {
       icon: Maximize,
       title: { en: "Spacious Display", am: "ሰፊ ማሳያ" },
       description: { 
-        en: "Over 5000 sq ft of furniture displays",
-        am: "ከ5000 ካሬ ጫማ በላይ የፈርኒቸር ማሳያዎች"
+        en: "Over 3000 sq ft of furniture displays",
+        am: "ከ3000 ካሬ ጫማ በላይ የፈርኒቸር ማሳያዎች"
       }
     },
     {
@@ -162,7 +162,7 @@ export default function ShowroomPage() {
     {
       id: 1,
       name: "Daniel Mekonnen",
-      date: "March 15, 2024",
+      date: "october 15, 2018",
       content: {
         en: "The showroom experience was exceptional! Seeing the furniture in person made all the difference. The consultants were incredibly helpful.",
         am: "የሽውራው ልምድ አስደናቂ ነበር! ፈርኒቸሩን በቀጥታ ማየት ሁሉንም ለውጥ አድርጎታል። አማካሪዎቹ እጅግ በጣም ጠቃሚ ነበሩ።"
@@ -172,7 +172,7 @@ export default function ShowroomPage() {
     {
       id: 2,
       name: "Hana Girma",
-      date: "February 28, 2024",
+      date: "september, 2018",
       content: {
         en: "Took my family for a weekend visit. The kids loved it, and we got amazing design ideas for our new home.",
         am: "ቤተሰቤን ለሳምንት መጨረሻ ጉብኝት ወስዸዋለሁ። ልጆቹ ወደዱት፣ እናም ለአዲስ ቤታችን አስደናቂ የዲዛይን ሀሳቦችን አግኝተናል።"
@@ -182,7 +182,7 @@ export default function ShowroomPage() {
     {
       id: 3,
       name: "Samuel Bekele",
-      date: "January 10, 2024",
+      date: "June 10, 2017",
       content: {
         en: "As an interior designer, I bring my clients here. The quality is evident when you see it up close.",
         am: "እንደ የውስጥ ዲዛይነር፣ ደንበኞቼን እዚህ አምጣለሁ። ጥራቱ በቅርብ ሲያዩ ግልጽ ነው።"
@@ -248,8 +248,8 @@ export default function ShowroomPage() {
       Number of guests: ${visitorInfo.guests}
       Special requirements: ${visitorInfo.specialRequirements}
       Please confirm!`;
-    
-    const whatsappUrl = `https://wa.me/+251911234567?text=${encodeURIComponent(message)}`;
+
+    const whatsappUrl = `https://wa.me/+251993449447?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -372,7 +372,7 @@ export default function ShowroomPage() {
                 </a>
                 <div className="grid grid-cols-2 gap-4">
                   <a
-                    href="tel:+251972590743"
+                    href="tel:+251993449447"
                     className="flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-600 dark:border-amber-500 dark:text-amber-500 py-2 rounded-lg font-semibold hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
                   >
                     <Phone className="w-4 h-4" />
@@ -385,7 +385,7 @@ export default function ShowroomPage() {
                           ? 'ሰላም! የሽውራ አቅጣጫ እፈልጋለሁ።' 
                           : 'Hello! I need directions to your showroom.'
                       );
-                      window.open(`https://wa.me/+251972590743?text=${message}`, '_blank');
+                      window.open(`https://wa.me/+251993449447?text=${message}`, '_blank');
                     }}
                     className="flex items-center justify-center gap-2 border-2 border-green-600 text-green-600 py-2 rounded-lg font-semibold hover:bg-green-50 transition-colors"
                   >
@@ -410,7 +410,7 @@ export default function ShowroomPage() {
                     <h4 className="font-bold text-gray-800 dark:text-white">
                       {language === 'am' ? 'ሰኞ - ቅዳሜ' : 'Monday - Saturday'}
                     </h4>
-                    <p className="text-gray-600 dark:text-gray-300">8:30 AM - 6:30 PM</p>
+                    <p className="text-gray-600 dark:text-gray-300">2:30 AM - 2:30 PM</p>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -419,7 +419,7 @@ export default function ShowroomPage() {
                     <h4 className="font-bold text-gray-800 dark:text-white">
                       {language === 'am' ? 'እሁድ' : 'Sunday'}
                     </h4>
-                    <p className="text-gray-600 dark:text-gray-300">10:00 AM - 4:00 PM</p>
+                    <p className="text-gray-600 dark:text-gray-300">5:00 AM - 3:00 PM</p>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -655,7 +655,7 @@ export default function ShowroomPage() {
               </h3>
               <div className="space-y-6">
                 <div className="bg-white/10 p-4 rounded-lg">
-                  <h4 className="font-bold mb-2">🌟 {language === 'am' ? 'የግል ጉብኝት' : 'Private Tour'}</h4>
+                  <h4 className="font-bold mb-2"> {language === 'am' ? 'የግል ጉብኝት' : 'Private Tour'}</h4>
                   <p className="text-sm">
                     {language === 'am' 
                       ? 'ከዲዛይን ባለሙያ ጋር ለ1-2 ሰዓት የግል አቅጣጫ' 
@@ -663,7 +663,7 @@ export default function ShowroomPage() {
                   </p>
                 </div>
                 <div className="bg-white/10 p-4 rounded-lg">
-                  <h4 className="font-bold mb-2">👨‍👩‍👧‍👦 {language === 'am' ? 'ቤተሰብ ጉብኝት' : 'Family Visit'}</h4>
+                  <h4 className="font-bold mb-2"> {language === 'am' ? 'ቤተሰብ ጉብኝት' : 'Family Visit'}</h4>
                   <p className="text-sm">
                     {language === 'am' 
                       ? 'ቤተሰብ ወይም ወዳጅ ጋር ለነፃ መጎብኘት' 
@@ -671,7 +671,7 @@ export default function ShowroomPage() {
                   </p>
                 </div>
                 <div className="bg-white/10 p-4 rounded-lg">
-                  <h4 className="font-bold mb-2">💼 {language === 'am' ? 'ንግድ ጉብኝት' : 'Business Visit'}</h4>
+                  <h4 className="font-bold mb-2"> {language === 'am' ? 'ንግድ ጉብኝት' : 'Business Visit'}</h4>
                   <p className="text-sm">
                     {language === 'am' 
                       ? 'ለሆቴል፣ ኩባንያ ወይም ሪስቶራንት ለግዥ' 
@@ -776,10 +776,10 @@ export default function ShowroomPage() {
                 </h3>
                 <div className="space-y-4">
                   {[
-                    { icon: '🅿️', text: language === 'am' ? 'ነፃ የመኪና ማቆሚያ' : 'Free parking available' },
-                    { icon: '🏨', text: language === 'am' ? 'ከፍሪንድሺፕ ሆቴል አቅራቢያ' : 'Near Amen Cafe Hawassa' },
-                    { icon: '☕', text: language === 'am' ? 'በርካታ ካፌዎች አጠገብ' : 'Multiple cafes nearby' },
-                    { icon: '🛒', text: language === 'am' ? 'ከሱቆች እና ማርኬቶች አቅራቢያ' : 'Close to shops & markets' },
+                    { icon: '', text: language === 'am' ? 'ነፃ የመኪና ማቆሚያ' : 'Free parking available' },
+                    { icon: '', text: language === 'am' ? 'ከፍሪንድሺፕ ሆቴል አቅራቢያ' : 'Near Amen Cafe Hawassa' },
+                    { icon: '', text: language === 'am' ? 'በርካታ ካፌዎች አጠገብ' : 'Multiple cafes nearby' },
+                    { icon: '', text: language === 'am' ? 'ከሱቆች እና ማርኬቶች አቅራቢያ' : 'Close to shops & markets' },
                   ].map((amenity, index) => (
                     <div key={index} className="flex items-center">
                       <span className="text-2xl mr-3">{amenity.icon}</span>
@@ -813,11 +813,11 @@ export default function ShowroomPage() {
               {language === 'am' ? 'ወዲያውኑ ያስይዙ' : 'Book Now'}
             </a>
             <a
-              href="tel:+251911234567"
+              href="tel:+251 93 44 9447"
               className="bg-transparent border-2 border-amber-600 text-amber-600 dark:border-amber-500 dark:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 px-10 py-4 rounded-lg text-lg font-semibold transition-all duration-300 flex items-center justify-center gap-3"
             >
               <Phone className="w-6 h-6" />
-              {language === 'am' ? 'ይደውሉ: +251 91 123 4567' : 'Call: +251 91 123 4567'}
+              {language === 'am' ? 'ይደውሉ: +251 93 44 9447' : 'Call: +251 93 44 9447'}
             </a>
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-6">

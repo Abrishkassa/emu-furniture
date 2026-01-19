@@ -9,7 +9,7 @@ export default function TrustBadges({ language = 'en' }: TrustBadgesProps) {
     {
       icon: Shield,
       title: language === 'am' ? "አስተማማኝ ክፍያ" : "Secure Payment",
-      description: language === 'am' ? "100% አስተማማኝ እና ምስጢራዊ ክፍያዎች" : "100% secure & encrypted payments"
+      description: language === 'am' ? "100% አስተማማኝ እና ምስጢራዊ ክፍያዎች" : "100% secure & direct payments"
     },
     {
       icon: Truck,
