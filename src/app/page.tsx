@@ -78,7 +78,7 @@ export default function Home() {
           en: "Glass and wood combination",
           am: "መስታወት እና እንጨት ጥምረት"
         },
-        price: 8500,
+        price: 8000,
         currency: "ETB",
         category: {
           en: "Table",

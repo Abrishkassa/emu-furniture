@@ -155,7 +155,7 @@ export default function BlogPage() {
         am: "ኢትዮጵያ ለፈርኒቸር ማዘጋጀት ከፍተኛ ጥራት የሚሰጡ የተለያዩ የጠንካራ እንጨት ዝርያዎች ባሏ ናት..."
       },
       author: "Alemayehu Bekele",
-      date: "2024-03-15",
+      date: "2017-08-15",
       readTime: 8,
       category: 'materials',
       tags: ["wood", "sustainability", "craftsmanship"],
@@ -180,8 +180,8 @@ export default function BlogPage() {
         en: "The Ethiopian living room is evolving with beautiful blends of cultural heritage and modern aesthetics...",
         am: "የኢትዮጵያ መኝታ ክፍል ከባህላዊ ቅርስ እና ከዘመናዊ አስደሳችነት ጋር በሚገጣጠሙ ውብ ድብልቅ እየተሻሻለ ነው..."
       },
-      author: "Sara Mohammed",
-      date: "2024-03-10",
+      author: "Mamo Genene",
+      date: "2018-03-10",
       readTime: 6,
       category: 'design',
       tags: ["interior design", "trends", "living room"],
@@ -206,8 +206,8 @@ export default function BlogPage() {
         en: "Proper maintenance can extend the life of your wooden furniture by decades...",
         am: "ትክክለኛ እንክብካቤ የእንጨት ፈርኒቸርዎን ህይወት በዘመናት ሊያራዝም ይችላል..."
       },
-      author: "Thomas Johnson",
-      date: "2024-03-05",
+      author: "Temesgen Debebe",
+      date: "2018-01-05",
       readTime: 5,
       category: 'tips',
       tags: ["maintenance", "wood care", "cleaning"],
@@ -233,7 +233,7 @@ export default function BlogPage() {
       am: "በኢሙ ፈርኒቸር፣ አስቀድሞ ማስተዳደር በምንሠራቸው ሁሉ መሃል ነው። ከተረጋገጡ የኢትዮጵያ የደን አስተዳደር ፕሮግራሞች ጋር እንሰራለን እና ሁሉም እንጨታችን ከኃላፊነት ያለው አስተዳደር የሚመጣ መሆኑን እናረጋግጣለን። በፈርኒቸራችን ውስጥ ለሚጠቀም እያንዳንዱ ዛፍ ሶስት አዳዲስ ዛፎችን በመዝራት በመላው ኢትዮጵያ የምንሠራውን የደን እንደገና ማተኮር ዘመቻ እናደርጋለን..."
     },
     author: "Emu Sustainability Team",
-    date: "2024-02-28",
+    date: "2017-11-28",
     readTime: 7,
     category: 'sustainability',
     tags: ["eco-friendly", "reforestation", "ethical"],
@@ -259,7 +259,7 @@ export default function BlogPage() {
       am: "የእጅ መቀነስ ከመደበኛ ቴክኒክ በላይ ነው፤ በኢትዮጵያ ፈርኒቸር ማዘጋጀት ውስጥ የታሪክ መተላለፊያ መልክ ነው። የኛ የጥበብ ሰዎች ለዘመናት የተጠቀሙባቸውን ባህላዊ መሳሪያዎች እና ስዕሎች በማዋቀር አመታት ያሳልፋሉ። እያንዳንዱ የተቀነሰ ዲዛይን ባህላዊ ትርጉም ይይዛል፣ ከሚዛን ያለው ስቅለት እምነትን እስከሚወክሉ ጂኦሜትሪክ ስዕሎች አንድነትን እና ማህበረሰብን እስከሚወክሉ ድረስ..."
     },
     author: "Yohannes Assefa",
-    date: "2024-02-20",
+    date: "2017-09-10",
     readTime: 10,
     category: 'design',
     tags: ["craftsmanship", "traditional", "artisan"],
@@ -273,7 +273,7 @@ export default function BlogPage() {
   {
     id: 6,
     title: {
-      en: "New Showroom Opening in Bole: What to Expect",
+      en: "New Showroom Opening in Hawassa Fura: What to Expect",
       am: "አዲስ ሽውራ በቦሌ መክፈት: ምን መጠበቅ እንዳለብዎ"
     },
     excerpt: {
@@ -281,11 +281,11 @@ export default function BlogPage() {
       am: "ከቅርብ ጊዜ ወደሚጀመሩት የአዲሱ ሽውራ አድራሻ እና ልዩ ስብስቦቻችን ያለ እይታ ያግኙ።"
     },
     content: { // ADD THIS
-      en: "We're excited to announce the opening of our new flagship showroom in Bole, Addis Ababa. This 8,000 sq ft space will feature our complete collection along with exclusive designs only available at this location. The showroom includes interactive design stations where customers can work with our designers to create custom furniture pieces...",
+      en: "We're excited to announce the opening of our new flagship showroom in Fura, Hawassa. This 8,000 sq ft space will feature our complete collection along with exclusive designs only available at this location. The showroom includes interactive design stations where customers can work with our designers to create custom furniture pieces...",
       am: "በቦሌ፣ አዲስ አበባ የሚገኘውን አዲስ ዋና ሽውራችንን መክፈታችንን በደስታ እናሳውቃለን። ይህ 8,000 ካሬ ጫማ ቦታ የሙሉ ስብስባችንን ከዚህ አድራሻ ብቻ የሚገኙ ልዩ ዲዛይኖች ጋር ያቀርባል። ሽውራው ደንበኞች ከዲዛይነሮቻችን ጋር በመሆን የግል ፈርኒቸር ክፍሎችን ለመፍጠር የሚችሉባቸው በይነመረብ የዲዛይን ጣቢያዎችን ያካትታል..."
     },
     author: "Emu News Team",
-    date: "2024-02-15",
+    date: "2017-02-15",
     readTime: 4,
     category: 'news',
     tags: ["showroom", "expansion", "new location"],
@@ -311,7 +311,7 @@ export default function BlogPage() {
       am: "ፍጹም የሽፋን ጨርቅን መምረጥ ለሁለቱም ለአስደሳችነት እና ለተግባራዊነት ወሳኝ ነው። የኢትዮጵያ ጥጥ አየር ማስገቢያ እና ምቾትን ይሰጣል፣ ላቅሶ ቆዳ ደግሞ ረጅም ጊዜ የሚቆይ እና ባለ ጥራት ስሜትን ይሰጣል። ለልጆች እና ለቤት እንስሳት ላሉት ቤተሰቦች፣ ከሚያሻሱ ማከሚያዎች ጋር የተሰሩ ብቃት ጨርቆችን እንመክራለን። እያንዳንዱ ቁሳቁስ የራሱ ልዩ ባህሪያት እና የእንክብካቤ መስፈርቶች አሉት..."
     },
     author: "Meron Tekle",
-    date: "2024-02-10",
+    date: "2018-02-10",
     readTime: 6,
     category: 'materials',
     tags: ["upholstery", "fabrics", "leather", "cotton"],
@@ -337,7 +337,7 @@ export default function BlogPage() {
       am: "በኢትዮጵያ የከተማ መኖሪያ ብዙውን ጊዜ የተወሰነ ቦታን በሙሉ መጠቀም ማለት ነው። የኛ ብዙ ተግባራዊ የፈርኒቸር ክፍሎች ለአጥጋቢ ቤቶች በተለይ የተነደፉ ናቸው። ወደ አልጋዎች የሚቀየሩ ተቀያያሪ ሶፋዎች፣ ሊዘረጉ የሚችሉ የምግብ ቤት ጠረጴዛዎች እና በግድግዳ ላይ የሚሰቀሉ የማከማቻ መፍትሄዎች የሚጠቀሙባቸውን ቦታዎች በእጅጉ ሊጨምሩ ይችላሉ። እንዲሁም በትክክለኛ የክፍል ልኬቶችዎ ለማስገባት ብጁ መጠን እናቀርባለን..."
     },
     author: "Amina Hussein",
-    date: "2024-02-05",
+    date: "2018-02-25",
     readTime: 5,
     category: 'design',
     tags: ["small spaces", "apartment living", "space saving"],
@@ -740,11 +740,11 @@ export default function BlogPage() {
               <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 mt-8 text-white">
                 <div className="text-center">
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-2xl font-bold">
-                    EB
+                    ME
                   </div>
-                  <h4 className="font-bold text-lg mb-2">Alemayehu Bekele</h4>
+                  <h4 className="font-bold text-lg mb-2">Mengistu</h4>
                   <p className="text-amber-200 text-sm mb-4">
-                    {language === 'am' ? 'የፈርኒቸር ዲዛይነር እና የቦሎግ ጸሐፊ' : 'Furniture Designer & Blog Writer'}
+                    {language === 'am' ? 'የፈርኒቸር ዲዛይነር እና የቦሎግ ጸሐፊ' : 'Emu Furniture Owner and Manager'}
                   </p>
                   <p className="text-gray-300 text-sm mb-6">
                     {language === 'am' 

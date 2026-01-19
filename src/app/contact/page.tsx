@@ -168,8 +168,8 @@ export default function ContactPage() {
         am: "ለምርት መጠየቅ፣ ዋጋ እና አዲስ ትዕዛዝ"
       },
       contact: {
-        phone: "+251 91 123 4567",
-        email: "sales@emufurniture.com",
+        phone: "+251 916 827 921 ",
+        email: "emufurniture1@gmail.com",
         hours: language === 'am' ? '8:30 ጥዋት - 6:30 ማታ' : '8:30 AM - 6:30 PM'
       }
     },
@@ -184,8 +184,8 @@ export default function ContactPage() {
         am: "ለከሽያጭ አገልግሎት፣ ዋስትና እና ድጋፍ"
       },
       contact: {
-        phone: "+251 92 987 6543",
-        email: "support@emufurniture.com",
+        phone: "+251 99 344 9447",
+        email: "emufurniture1@gmail.com",
         hours: language === 'am' ? 'ሁልጊዜ' : '24/7'
       }
     },
@@ -200,8 +200,8 @@ export default function ContactPage() {
         am: "ለብጁ ፈርኒቸር ዲዛይን እና ዝርዝሮች"
       },
       contact: {
-        phone: "+251 93 456 7890",
-        email: "custom@emufurniture.com",
+        phone: "+251 99 344 9447",
+        email: "emufurniture1@gmail.com",
         hours: language === 'am' ? 'ሰኞ - ቅዳሜ' : 'Mon - Sat'
       }
     },
@@ -216,8 +216,8 @@ export default function ContactPage() {
         am: "ለሽውራ ቀጠሮዎች እና የግል ጉብኝቶች"
       },
       contact: {
-        phone: "+251 94 321 0987",
-        email: "showroom@emufurniture.com",
+        phone: "+251 916 827 921",
+        email: "emufurniture1@gmail.com",
         hours: language === 'am' ? 'ሁሉም ቀናት' : 'All Days'
       }
     },
@@ -236,7 +236,7 @@ export default function ContactPage() {
             ? `ሰላም! ስለ ኢሙ ፈርኒቸር መረጃ እፈልጋለሁ። ስም: ${formData.name}`
             : `Hello! I'm interested in Emu Furniture. Name: ${formData.name}`
         );
-        window.open(`https://wa.me/+251911234567?text=${message}`, '_blank');
+        window.open(`https://wa.me/+251 99 344 9447?text=${message}`, '_blank');
       }
     },
     {
@@ -246,7 +246,7 @@ export default function ContactPage() {
       description: language === 'am' ? 'በቀጥታ ይደውሉ' : 'Direct call',
       color: 'bg-blue-600 hover:bg-blue-700',
       action: () => {
-        window.location.href = 'tel:+251911234567';
+        window.location.href = 'tel:+251 99 344 9447';
       }
     },
     {
@@ -311,7 +311,7 @@ export default function ContactPage() {
             Message: ${formData.message}
             Please contact me!`
         );
-        window.open(`https://wa.me/+251911234567?text=${message}`, '_blank');
+        window.open(`https://wa.me/+251 99 344 9447?text=${message}`, '_blank');
       }
 
       // Prepare data for backend submission
@@ -450,8 +450,8 @@ export default function ContactPage() {
                     {formStatus === 'error' && formData.name && (
                       <span className="text-sm block mt-1">
                         {language === 'am' 
-                          ? 'እባክዎ በጥሬው ይደውሉ: +251 91 123 4567'
-                          : 'Please call us directly: +251 91 123 4567'}
+                          ? 'እባክዎ በጥሬው ይደውሉ: +251 99 344 9447'
+                          : 'Please call us directly: +251 99 344 9447'}
                       </span>
                     )}
                   </span>
@@ -620,7 +620,7 @@ export default function ContactPage() {
               </p>
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-2xl font-bold">+251 97 259 0743</div>
+                  <div className="text-2xl font-bold">+251 911 369 366</div>
                   <div className="text-sm text-red-200">{language === 'am' ? '24/7 ይጠራ' : 'Call 24/7'}</div>
                 </div>
                 <a
@@ -715,7 +715,7 @@ export default function ContactPage() {
                           ? 'ሰላም! የሽውራ አቅጣጫ እፈልጋለሁ።'
                           : 'Hello! I need directions to your showroom.'
                       );
-                      window.open(`https://wa.me/+251972590743?text=${message}`, '_blank');
+                      window.open(`https://wa.me/+251 99 344 9447?text=${message}`, '_blank');
                     }}
                     className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition-colors"
                   >
@@ -899,11 +899,11 @@ export default function ContactPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="tel:+251911234567"
+              href="tel:+251 99 344 9447"
               className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-700 dark:hover:bg-amber-600 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
             >
               <Phone className="w-6 h-6" />
-              +251 97 259 0743
+              +251 99 344 9447
             </a>
             <button
               onClick={() => {
@@ -912,7 +912,7 @@ export default function ContactPage() {
                     ? 'ሰላም! ለነፃ ምክር እፈልጋለሁ።'
                     : 'Hello! I would like a free consultation.'
                 );
-                window.open(`https://wa.me/+251972590743?text=${message}`, '_blank');
+                window.open(`https://wa.me/+251 99 344 9447?text=${message}`, '_blank');
               }}
               className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
             >

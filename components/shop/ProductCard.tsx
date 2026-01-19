@@ -43,18 +43,11 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
   const [showDetails, setShowDetails] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-ET', {
-      style: 'currency',
-      currency: product.currency,
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
-
   const handleReserve = () => {
     const whatsappNumber = '+251993449447';
     const message = encodeURIComponent(
-      `Hello! I'm interested in reserving: ${product.name_en}\nPrice: ${formatPrice(product.price)}\n\nCan you help me with this?`
+      `Hello! I'm interested in reserving: ${product.name_en}\n\nCan you help me with this?`
+      // Price has been removed from the message
     );
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
   };
@@ -220,8 +213,9 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
           
           <div className="flex items-center justify-between mb-4">
             <div>
+              {/* Price Display - Now masked */}
               <p className="text-2xl font-bold text-amber-700">
-                {formatPrice(product.price)}
+                ***** {product.currency}
               </p>
               {product.estimatedWeeks && (
                 <p className="text-sm text-gray-500 mt-1">
@@ -402,8 +396,9 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
             </div>
             
             <div className="text-right">
+              {/* Price Display - Now masked */}
               <p className="text-3xl font-bold text-amber-700 mb-2">
-                {formatPrice(product.price)}
+                ***** {product.currency}
               </p>
               {product.estimatedWeeks && (
                 <p className="text-sm text-gray-500">

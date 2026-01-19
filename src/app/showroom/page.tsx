@@ -740,7 +740,7 @@ export default function ShowroomPage() {
                 <div className="space-y-6">
                   <div>
                     <h4 className="font-bold text-amber-600 dark:text-amber-500 mb-2">
-                      🚗 {language === 'am' ? 'ከቦሌ በመኪና' : 'From Piassa by Car'}
+                       {language === 'am' ? 'ከቦሌ በመኪና' : 'From Piassa by Car'}
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300">
                       {language === 'am' 
@@ -750,7 +750,7 @@ export default function ShowroomPage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-amber-600 dark:text-amber-500 mb-2">
-                      🚌 {language === 'am' ? 'በህዝብ ትራንስፖርት' : 'By Public Transport'}
+                       {language === 'am' ? 'በህዝብ ትራንስፖርት' : 'By Public Transport'}
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300">
                       {language === 'am' 
@@ -760,7 +760,7 @@ export default function ShowroomPage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-amber-600 dark:text-amber-500 mb-2">
-                      🚕 {language === 'am' ? 'በታክሲ' : 'By Taxi'}
+                       {language === 'am' ? 'በታክሲ' : 'By Taxi'}
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300">
                       {language === 'am' 
