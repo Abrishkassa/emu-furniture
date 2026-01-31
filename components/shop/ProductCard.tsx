@@ -8,12 +8,14 @@ import {
   MapPin,
   Check,
   ShoppingCart,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Tag // Add Tag icon for product code
 } from 'lucide-react';
 
 // Define types at the top
 type ProductType = {
   id: string | number;
+  productCode: string; // Added product code
   name_en: string;
   name_am: string;
   description: string;
@@ -46,8 +48,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
   const handleReserve = () => {
     const whatsappNumber = '+251993449447';
     const message = encodeURIComponent(
-      `Hello! I'm interested in reserving: ${product.name_en}\n\nCan you help me with this?`
-      // Price has been removed from the message
+      `Hello! I'm interested in reserving: ${product.name_en}\nProduct Code: ${product.productCode}\n\nCan you help me with this?`
     );
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
   };
@@ -57,7 +58,7 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
       try {
         await navigator.share({
           title: product.name_en,
-          text: `Check out ${product.name_en} from Emu Furniture!`,
+          text: `Check out ${product.name_en} (${product.productCode}) from Emu Furniture!`,
           url: window.location.href,
         });
       } catch (err) {
@@ -173,6 +174,13 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
             </div>
           )}
 
+          {/* Product Code Badge */}
+          <div className="absolute top-4 left-4 ml-16">
+            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium font-mono">
+              {product.productCode}
+            </span>
+          </div>
+
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
             {product.inStock ? (
               <div className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full">
@@ -197,10 +205,14 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
 
         {/* Info Section */}
         <div className="p-6">
-          <div className="mb-2">
+          <div className="flex justify-between items-start mb-2">
             <span className="text-sm text-amber-600 font-medium">
               {product.category}
             </span>
+            <div className="flex items-center text-gray-500 text-sm">
+              <Tag className="w-3 h-3 mr-1" />
+              <span className="font-mono">{product.productCode}</span>
+            </div>
           </div>
           
           <h3 className="text-lg font-bold text-gray-800 mb-2">
@@ -260,6 +272,10 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
           {showDetails && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">{language === 'en' ? 'Product Code:' : 'የምርት ኮድ:'}</span>
+                  <span className="font-medium font-mono">{product.productCode}</span>
+                </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">{language === 'en' ? 'Material:' : 'ዕቃ:'}</span>
                   <span className="font-medium">{product.material}</span>
@@ -366,6 +382,12 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
                 <span className="text-sm text-amber-600 font-medium">
                   {product.category}
                 </span>
+                <div className="flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                  <Tag className="w-3 h-3 mr-1" />
+                  <span className="text-xs font-medium font-mono">
+                    {product.productCode}
+                  </span>
+                </div>
                 {product.inStock ? (
                   <div className="flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full">
                     <Check className="w-3 h-3 mr-1" />
@@ -414,6 +436,10 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
           {/* Specifications */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-gray-50 p-3 rounded-lg">
+              <p className="text-sm text-gray-500">{language === 'en' ? 'Product Code' : 'የምርት ኮድ'}</p>
+              <p className="font-medium font-mono">{product.productCode}</p>
+            </div>
+            <div className="bg-gray-50 p-3 rounded-lg">
               <p className="text-sm text-gray-500">{language === 'en' ? 'Material' : 'ዕቃ'}</p>
               <p className="font-medium">{product.material}</p>
             </div>
@@ -425,15 +451,6 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
               <p className="text-sm text-gray-500">{language === 'en' ? 'Delivery' : 'ማድረሻ'}</p>
               <p className="font-medium text-green-600">
                 {product.deliveryZones.length} {language === 'en' ? 'areas' : 'አካባቢዎች'}
-              </p>
-            </div>
-            <div className="bg-gray-50 p-3 rounded-lg">
-              <p className="text-sm text-gray-500">{language === 'en' ? 'Availability' : 'አቅርቦት'}</p>
-              <p className="font-medium">
-                {product.inStock 
-                  ? (language === 'en' ? 'Immediate' : 'በቅጽበት')
-                  : (language === 'en' ? 'On Order' : 'በትዕዛዝ')
-                }
               </p>
             </div>
           </div>

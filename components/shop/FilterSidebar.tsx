@@ -1,20 +1,20 @@
 'use client';
 
-import { X, Filter as FilterIcon } from 'lucide-react';
+import { X, Filter as FilterIcon, Tag } from 'lucide-react';
 import { useState } from 'react';
 
 interface FilterSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   categories: Array<{ id: string; name_en: string; name_am: string }>;
-  materials: string[];
+  materials: string[]; // This now contains product codes instead of materials
   deliveryZones: string[];
   priceRange: [number, number];
   onPriceChange: (range: [number, number]) => void;
   priceStats: { min: number; max: number };
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
-  selectedMaterials: string[];
+  selectedMaterials: string[]; // This now contains selected product codes
   onMaterialChange: (materials: string[]) => void;
   selectedZones: string[];
   onZoneChange: (zones: string[]) => void;
@@ -51,12 +51,18 @@ export default function FilterSidebar({
   language
 }: FilterSidebarProps) {
   const [localPriceRange, setLocalPriceRange] = useState(priceRange);
+  const [searchCodeQuery, setSearchCodeQuery] = useState(''); // For searching product codes
 
-  const handleMaterialToggle = (material: string) => {
-    if (selectedMaterials.includes(material)) {
-      onMaterialChange(selectedMaterials.filter(m => m !== material));
+  // Filter materials (product codes) based on search query
+  const filteredProductCodes = materials.filter(code =>
+    code.toLowerCase().includes(searchCodeQuery.toLowerCase())
+  );
+
+  const handleMaterialToggle = (code: string) => {
+    if (selectedMaterials.includes(code)) {
+      onMaterialChange(selectedMaterials.filter(m => m !== code));
     } else {
-      onMaterialChange([...selectedMaterials, material]);
+      onMaterialChange([...selectedMaterials, code]);
     }
   };
 
@@ -74,6 +80,26 @@ export default function FilterSidebar({
       currency: 'ETB',
       minimumFractionDigits: 0,
     }).format(price);
+  };
+
+  // Function to extract product code prefix (category from code)
+  const getCodePrefix = (code: string): string => {
+    const parts = code.split('-');
+    return parts[0] || code;
+  };
+
+  // Function to get color based on code prefix
+  const getCodePrefixColor = (code: string): string => {
+    const prefix = getCodePrefix(code);
+    const colorMap: Record<string, string> = {
+      'LR': 'bg-blue-100 text-blue-800 border-blue-200',
+      'BR': 'bg-purple-100 text-purple-800 border-purple-200',
+      'DN': 'bg-green-100 text-green-800 border-green-200',
+      'OF': 'bg-orange-100 text-orange-800 border-orange-200',
+      'OD': 'bg-teal-100 text-teal-800 border-teal-200',
+      'CU': 'bg-red-100 text-red-800 border-red-200'
+    };
+    return colorMap[prefix] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
 
   return (
@@ -176,29 +202,96 @@ export default function FilterSidebar({
           </div>
         </div>
 
-        {/* Material */}
+        {/* Product Codes Filter */}
         <div>
-          <h3 className="font-bold text-lg mb-3">
-            {language === 'en' ? 'Material' : 'ዕቃ'}
-          </h3>
-          <div className="space-y-2">
-            {materials.map((material) => (
-              <button
-                key={material}
-                onClick={() => handleMaterialToggle(material)}
-                className={`flex items-center w-full text-left px-3 py-2 rounded-lg transition ${
-                  selectedMaterials.includes(material)
-                    ? 'bg-blue-100 text-blue-700 font-medium'
-                    : 'hover:bg-gray-100 text-gray-700'
-                }`}
-              >
-                <span className="mr-2">
-                  {selectedMaterials.includes(material) ? '✓' : '○'}
-                </span>
-                {material}
-              </button>
-            ))}
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-lg flex items-center">
+              <Tag className="w-4 h-4 mr-2" />
+              {language === 'en' ? 'Product Codes' : 'የምርት ኮዶች'}
+            </h3>
+            {selectedMaterials.length > 0 && (
+              <span className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
+                {selectedMaterials.length} {language === 'en' ? 'selected' : 'የተመረጡ'}
+              </span>
+            )}
           </div>
+          
+          {/* Search input for product codes */}
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder={language === 'en' ? 'Search product codes...' : 'የምርት ኮዶችን ይፈልጉ...'}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              value={searchCodeQuery}
+              onChange={(e) => setSearchCodeQuery(e.target.value)}
+            />
+          </div>
+          
+          <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
+            {filteredProductCodes.length === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-2">
+                {language === 'en' ? 'No product codes found' : 'ምንም የምርት ኮድ አልተገኘም'}
+              </p>
+            ) : (
+              filteredProductCodes.map((code) => (
+                <button
+                  key={code}
+                  onClick={() => handleMaterialToggle(code)}
+                  className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-lg transition border ${
+                    selectedMaterials.includes(code)
+                      ? 'bg-blue-50 text-blue-700 font-medium border-blue-300'
+                      : 'hover:bg-gray-50 text-gray-700 border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <span className="mr-2">
+                      {selectedMaterials.includes(code) ? '✓' : '○'}
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="font-mono text-sm">{code}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${getCodePrefixColor(code)}`}>
+                        {getCodePrefix(code)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={`text-xs px-2 py-1 rounded ${getCodePrefixColor(code)}`}>
+                    {getCodePrefix(code)}
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+          
+          {/* Selected codes summary */}
+          {selectedMaterials.length > 0 && (
+            <div className="mt-3 p-2 bg-blue-50 rounded-lg">
+              <p className="text-xs text-blue-700 font-medium mb-1">
+                {language === 'en' ? 'Selected codes:' : 'የተመረጡ ኮዶች:'}
+              </p>
+              <div className="flex flex-wrap gap-1">
+                {selectedMaterials.map((code) => (
+                  <span
+                    key={code}
+                    className="inline-flex items-center text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded"
+                  >
+                    {code}
+                    <button
+                      onClick={() => handleMaterialToggle(code)}
+                      className="ml-1 text-blue-600 hover:text-blue-800"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <button
+                onClick={() => onMaterialChange([])}
+                className="text-xs text-blue-600 hover:text-blue-800 mt-1"
+              >
+                {language === 'en' ? 'Clear all' : 'ሁሉንም አጽዳ'}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Delivery Zone */}
@@ -272,6 +365,7 @@ export default function FilterSidebar({
             onInStockChange(false);
             onPopularChange(false);
             onCustomChange(false);
+            setSearchCodeQuery('');
           }}
           className="w-full py-3 border-2 border-amber-600 text-amber-600 font-medium rounded-lg hover:bg-amber-50 transition"
         >

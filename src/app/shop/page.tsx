@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
 import { Filter, Search, Grid, List, Star, Package, Clock, Loader2 } from 'lucide-react';
 import FilterSidebar from '@/components/shop/FilterSidebar';
 import ProductCard from '@/components/shop/ProductCard';
@@ -9,7 +8,8 @@ import LanguageToggle from '@/components/LanguageToggle';
 import ThemeToggle from '@/components/ThemeToggle';
 
 <><ThemeToggle /><LanguageToggle /></>
-// Categories for filtering - we'll get these from API or keep static
+
+// Categories based on product code prefixes
 const categories = [
   { id: 'all', name_en: 'All Products', name_am: 'ሁሉም ምርቶች' },
   { id: 'living-room', name_en: 'Living Room', name_am: 'የመቀመጫ ቤት' },
@@ -20,24 +20,96 @@ const categories = [
   { id: 'custom', name_en: 'Custom Orders', name_am: 'ብጁ ትዕዛዞች' }
 ];
 
-// Materials for filtering - we'll get these from products or keep static
-const materials = [
-  'Solid Wood', 'Fabric', 'Leather', 'Metal', 'Glass', 'Rattan', 'Mahogany', 'Teak', 'Pine'
-];
+// Product codes for filtering (extracted from product codes)
+// We'll auto-generate these from product codes
+let productCodes: string[] = [];
 
 // Delivery zones - keep static for now
 const deliveryZones = [
   'Hawassa', 'Atote', 'Piassa', 'Mobil', 'Menaharya', 'Adis Ketema', 'Hayik dar', 'All Areas'
 ];
 
-// Mock products data (10 products covering all categories and materials)
+// Function to generate description based on product code
+const generateDescriptionFromCode = (productCode: string, language: 'en' | 'am'): string => {
+  // Extract parts from code (example: LR-SOFA-001-MW)
+  const parts = productCode.split('-');
+  
+  if (parts.length < 2) {
+    return language === 'en' 
+      ? 'Handcrafted furniture piece'
+      : 'በእጅ የተሰራ የቤት እቃ';
+  }
+  
+  const categoryCode = parts[0]; // LR, BR, DN, OF, etc.
+  const typeCode = parts[1]; // SOFA, BED, TABLE, etc.
+  
+  // Category mapping
+  const categoryMap: Record<string, string> = {
+    'LR': 'Living Room',
+    'BR': 'Bedroom',
+    'DN': 'Dining Room',
+    'OF': 'Office',
+    'OD': 'Outdoor',
+    'CU': 'Custom'
+  };
+  
+  // Type mapping
+  const typeMap: Record<string, string> = {
+    'SOFA': language === 'en' ? 'Sofa' : 'ሶፋ',
+    'BED': language === 'en' ? 'Bed' : 'አልጋ',
+    'TABLE': language === 'en' ? 'Table' : 'ጠረጴዛ',
+    'CHAIR': language === 'en' ? 'Chair' : 'ወንበር',
+    'DESK': language === 'en' ? 'Desk' : 'የቢሮ ጠረጴዛ',
+    'WARDROBE': language === 'en' ? 'Wardrobe' : 'መደርደሪያ',
+    'CABINET': language === 'en' ? 'Cabinet' : 'ቤተሰብ'
+  };
+  
+  // Material from code (last part if exists)
+  const materialCode = parts.length > 2 ? parts[parts.length - 1] : '';
+  const materialMap: Record<string, string> = {
+    'MW': language === 'en' ? 'Solid Wood' : 'ጠንካራ እንጨት',
+    'ME': language === 'en' ? 'Metal' : 'ብረት',
+    'LE': language === 'en' ? 'Leather' : 'ቆዳ',
+    'FA': language === 'en' ? 'Fabric' : 'ጨርቅ',
+    'COM': language === 'en' ? 'Composite' : 'ድብልቅ'
+  };
+  
+  const categoryName = categoryMap[categoryCode] || '';
+  const typeName = typeMap[typeCode] || '';
+  const materialName = materialMap[materialCode] || '';
+  
+  if (language === 'en') {
+    return `${categoryName} ${typeName}${materialName ? ` made from ${materialName}` : ''}. Handcrafted Ethiopian furniture with unique design.`;
+  } else {
+    return `${categoryName} ${typeName}${materialName ? ` ከ${materialName} የተሰራ` : ''}. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.`;
+  }
+};
+
+// Function to determine category from product code
+const getCategoryFromCode = (productCode: string): string => {
+  const categoryCode = productCode.split('-')[0];
+  
+  const categoryMapping: Record<string, string> = {
+    'LR': 'Living Room',
+    'BR': 'Bedroom',
+    'DN': 'Dining Room',
+    'OF': 'Office',
+    'OD': 'Outdoor',
+    'CU': 'Custom Orders'
+  };
+  
+  return categoryMapping[categoryCode] || 'Uncategorized';
+};
+
+// Mock products data with product codes
 const MOCK_PRODUCTS: ApiProduct[] = [
   {
     id: 'mock-1',
+    productCode: 'LR-SOFA-001-MW',
     nameEn: 'Traditional Ethiopian Sofa',
     nameAm: 'የኢትዮጵያ ባህላዊ ሶፋ',
-    descriptionEn: 'Handcrafted traditional Ethiopian sofa with intricate wood carvings and comfortable cushions. Made from solid mahogany wood.',
-    descriptionAm: 'በእጅ የተሰራ የኢትዮጵያ ባህላዊ ሶፋ ከወፍራም የእንጨት ቅርጸት እና አመቺ አልጋዎች ጋር። ከጠንካራ የማሆጋኒ እንጨት የተሰራ።',
+    descriptionEn: 'Generated from code: Living Room Sofa made from Solid Wood. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: የመቀመጫ ቤት ሶፋ ከጠንካራ እንጨት የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 24500,
     currency: 'ETB',
     categoryEn: 'Living Room',
@@ -47,7 +119,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     width: 90,
     height: 85,
     unit: 'cm',
-    material: 'Mahogany Wood',
+    material: 'Solid Wood', // Changed from Mahogany
     color: 'Brown',
     inStock: true,
     stockQuantity: 5,
@@ -62,10 +134,11 @@ const MOCK_PRODUCTS: ApiProduct[] = [
   },
   {
     id: 'mock-2',
+    productCode: 'OF-DESK-002-ME',
     nameEn: 'Modern Office Desk',
     nameAm: 'ዘመናዊ የቢሮ ጠረጴዛ',
-    descriptionEn: 'Minimalist office desk with metal legs and solid wood top. Perfect for home office setup.',
-    descriptionAm: 'ሚኒማሊስት የቢሮ ጠረጴዛ ከብረት እግሮች እና ጠንካራ የእንጨት አናት ጋር። ለቤት ቢሮ ማዋቀር ፍጹም።',
+    descriptionEn: 'Generated from code: Office Desk made from Metal. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: ቢሮ ጠረጴዛ ከብረት የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 12500,
     currency: 'ETB',
     categoryEn: 'Office',
@@ -75,7 +148,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     width: 80,
     height: 75,
     unit: 'cm',
-    material: 'Metal and Pine Wood',
+    material: 'Metal', // Changed from Metal and Pine Wood
     color: 'Black',
     inStock: true,
     stockQuantity: 8,
@@ -90,10 +163,11 @@ const MOCK_PRODUCTS: ApiProduct[] = [
   },
   {
     id: 'mock-3',
+    productCode: 'BR-BED-003-MW',
     nameEn: 'King Size Bed Frame',
     nameAm: 'ንጉስ መጠን ያለው የአልጋ ሣጥን',
-    descriptionEn: 'Solid teak wood bed frame with headboard storage. Ethiopian craftsmanship at its finest.',
-    descriptionAm: 'ከማዕከለኛ መያዣ ጋር ጠንካራ የቲክ እንጨት የአልጋ ሣጥን። የኢትዮጵያ ብልጽግና በጣም ጥሩው ደረጃ።',
+    descriptionEn: 'Generated from code: Bedroom Bed made from Solid Wood. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: የመኝታ ቤት አልጋ ከጠንካራ እንጨት የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 38500,
     currency: 'ETB',
     categoryEn: 'Bedroom',
@@ -103,7 +177,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     width: 180,
     height: 110,
     unit: 'cm',
-    material: 'Teak Wood',
+    material: 'Solid Wood', // Changed from Teak Wood
     color: 'Natural',
     inStock: false,
     stockQuantity: 0,
@@ -112,16 +186,17 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     rating: 4.9,
     numberOfReviews: 35,
     estimatedDelivery: '5-6 weeks',
-    tags: ['bedroom', 'teak', 'custom'],
+    tags: ['bedroom', 'solid-wood', 'custom'],
     createdAt: '2024-01-20',
     updatedAt: '2024-03-05'
   },
   {
     id: 'mock-4',
+    productCode: 'DN-TABLE-004-MW',
     nameEn: 'Dining Table Set',
     nameAm: 'የምግብ ቤት ጠረጴዛ ስብስብ',
-    descriptionEn: '6-seater dining table with matching chairs. Made from sustainable pine wood.',
-    descriptionAm: '6 ሰው የሚገኝበት የምግብ ቤት ጠረጴዛ ከሚመሳሰሉ ወንበሮች ጋር። ከቀጣይነት ያለው ፓይን እንጨት የተሰራ።',
+    descriptionEn: 'Generated from code: Dining Room Table made from Solid Wood. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: ምግብ ቤት ጠረጴዛ ከጠንካራ እንጨት የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 32000,
     currency: 'ETB',
     categoryEn: 'Dining Room',
@@ -131,7 +206,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     width: 100,
     height: 75,
     unit: 'cm',
-    material: 'Pine Wood',
+    material: 'Solid Wood', // Changed from Pine Wood
     color: 'Walnut',
     inStock: true,
     stockQuantity: 3,
@@ -146,10 +221,11 @@ const MOCK_PRODUCTS: ApiProduct[] = [
   },
   {
     id: 'mock-5',
+    productCode: 'OD-CHAIR-005-MW',
     nameEn: 'Outdoor Garden Chair',
     nameAm: 'የበግ ቆፍ የአትክልት ወንበር',
-    descriptionEn: 'Weather-resistant rattan garden chair. Perfect for patio or balcony.',
-    descriptionAm: 'በአየር ሁኔታ የማይጎዳ የራታን የአትክልት ወንበር። ለፓቲዮ ወይም ለባልኮኒ ፍጹም።',
+    descriptionEn: 'Generated from code: Outdoor Chair made from Solid Wood. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: የቤት ውጫዊ ወንበር ከጠንካራ እንጨት የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 6500,
     currency: 'ETB',
     categoryEn: 'Outdoor',
@@ -159,7 +235,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     width: 70,
     height: 85,
     unit: 'cm',
-    material: 'Rattan',
+    material: 'Solid Wood', // Changed from Rattan
     color: 'Beige',
     inStock: true,
     stockQuantity: 12,
@@ -168,16 +244,17 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     rating: 4.3,
     numberOfReviews: 19,
     estimatedDelivery: '1 week',
-    tags: ['outdoor', 'garden', 'rattan'],
+    tags: ['outdoor', 'garden', 'weather-resistant'],
     createdAt: '2024-03-01',
     updatedAt: '2024-03-10'
   },
   {
     id: 'mock-6',
+    productCode: 'LR-CHAIR-006-LE',
     nameEn: 'Leather Recliner Chair',
     nameAm: 'ቆዳ ሪክላይነር ወንበር',
-    descriptionEn: 'Premium leather recliner chair with massage function. Ultimate comfort experience.',
-    descriptionAm: 'ፕሪሚየም ቆዳ ሪክላይነር ወንበር ከማሰስ ተግባር ጋር። የመጨረሻ አመቺነት ተሞክሮ።',
+    descriptionEn: 'Generated from code: Living Room Chair made from Leather. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: የመቀመጫ ቤት ወንበር ከቆዳ የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 28500,
     currency: 'ETB',
     categoryEn: 'Living Room',
@@ -202,10 +279,11 @@ const MOCK_PRODUCTS: ApiProduct[] = [
   },
   {
     id: 'mock-7',
-    nameEn: 'Glass Coffee Table',
-    nameAm: 'መስታወት የቡና ጠረጴዛ',
-    descriptionEn: 'Modern glass coffee table with metal frame. Elegant and durable design.',
-    descriptionAm: 'ዘመናዊ መስታወት የቡና ጠረጴዛ ከብረት ፍሬም ጋር። የተራቀቀ እና ዘላቂ ዲዛይን።',
+    productCode: 'LR-TABLE-007-COM',
+    nameEn: 'Coffee Table',
+    nameAm: 'የቡና ጠረጴዛ',
+    descriptionEn: 'Generated from code: Living Room Table made from Composite. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: የመቀመጫ ቤት ጠረጴዛ ከድብልቅ ዕቃ የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 8500,
     currency: 'ETB',
     categoryEn: 'Living Room',
@@ -215,7 +293,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     width: 60,
     height: 45,
     unit: 'cm',
-    material: 'Glass and Metal',
+    material: 'Composite', // Changed from Glass and Metal
     color: 'Silver',
     inStock: true,
     stockQuantity: 7,
@@ -224,16 +302,17 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     rating: 4.2,
     numberOfReviews: 24,
     estimatedDelivery: '2 weeks',
-    tags: ['glass', 'modern', 'living-room'],
+    tags: ['modern', 'living-room', 'coffee-table'],
     createdAt: '2024-02-15',
     updatedAt: '2024-03-05'
   },
   {
     id: 'mock-8',
+    productCode: 'CU-WARDROBE-008-MW',
     nameEn: 'Custom Wardrobe',
     nameAm: 'ብጁ የልብስ መደርደሪያ',
-    descriptionEn: 'Custom-built wardrobe with built-in lighting and mirror. Made to your exact specifications.',
-    descriptionAm: 'ብጁ የሚሰራ የልብስ መደርደሪያ ከበተሰራ መብራት እና መስታወት ጋር። በትክክለኛዎ ልኬቶች የተሰራ።',
+    descriptionEn: 'Generated from code: Custom Orders Wardrobe made from Solid Wood. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: ብጁ ትዕዛዞች መደርደሪያ ከጠንካራ እንጨት የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 55000,
     currency: 'ETB',
     categoryEn: 'Custom Orders',
@@ -243,7 +322,7 @@ const MOCK_PRODUCTS: ApiProduct[] = [
     width: 60,
     height: 220,
     unit: 'cm',
-    material: 'Solid Wood and Glass',
+    material: 'Solid Wood', // Changed from Solid Wood and Glass
     color: 'White',
     inStock: true,
     stockQuantity: 1,
@@ -258,10 +337,11 @@ const MOCK_PRODUCTS: ApiProduct[] = [
   },
   {
     id: 'mock-9',
+    productCode: 'LR-SOFA-009-FA',
     nameEn: 'Fabric Sectional Sofa',
     nameAm: 'ጨርቅ ሴክሽናል ሶፋ',
-    descriptionEn: 'L-shaped sectional sofa with removable fabric covers. Spacious and comfortable.',
-    descriptionAm: 'ኤል-ቅርጽ ያለው ሴክሽናል ሶፋ ከሚወገዱ የጨርቅ ኮቦርቶች ጋር። ሰፊ እና አመቺ።',
+    descriptionEn: 'Generated from code: Living Room Sofa made from Fabric. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: የመቀመጫ ቤት ሶፋ ከጨርቅ የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 42500,
     currency: 'ETB',
     categoryEn: 'Living Room',
@@ -286,10 +366,11 @@ const MOCK_PRODUCTS: ApiProduct[] = [
   },
   {
     id: 'mock-10',
+    productCode: 'OF-CABINET-010-MW',
     nameEn: 'Bookshelf with Drawers',
     nameAm: 'ከመያዣዎች ጋር የመጻሕፍት መደርደሪያ',
-    descriptionEn: 'Multi-purpose bookshelf with built-in drawers. Perfect for office or living room.',
-    descriptionAm: 'ከበተሰሩ መያዣዎች ጋር ብዙ ዓላማ ያለው የመጻሕፍት መደርደሪያ። ለቢሮ ወይም ለመቀመጫ ቤት ፍጹም።',
+    descriptionEn: 'Generated from code: Office Cabinet made from Solid Wood. Handcrafted Ethiopian furniture with unique design.',
+    descriptionAm: 'ከኮድ የተገኘ: ቢሮ ቤተሰብ ከጠንካራ እንጨት የተሰራ. በኢትዮጵያ ብልጽግና የተሰራ ብቸኛ ዲዛይን ያለው የቤት እቃ.',
     price: 14500,
     currency: 'ETB',
     categoryEn: 'Office',
@@ -314,9 +395,10 @@ const MOCK_PRODUCTS: ApiProduct[] = [
   }
 ];
 
-// Type for API product
+// Type for API product (updated with productCode)
 type ApiProduct = {
   id: string;
+  productCode: string; // Added
   nameEn: string;
   nameAm: string;
   descriptionEn: string;
@@ -346,9 +428,10 @@ type ApiProduct = {
   updatedAt: string;
 };
 
-// Type for transformed product (matching your frontend)
+// Type for transformed product (updated with productCode)
 type TransformedProduct = {
   id: string;
+  productCode: string; // Added
   name_en: string;
   name_am: string;
   description: string;
@@ -359,11 +442,11 @@ type TransformedProduct = {
   dimensions: string;
   inStock: boolean;
   isPopular: boolean;
-  isCustom: boolean; // We'll determine this based on tags or other criteria
+  isCustom: boolean;
   deliveryZones: string[];
   images: string[];
   estimatedWeeks: number | null;
-  imageUrls: string[]; // Add this field for proper image URLs
+  imageUrls: string[];
 };
 
 export default function ShopPage() {
@@ -380,7 +463,7 @@ export default function ShopPage() {
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
-  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [selectedCodes, setSelectedCodes] = useState<string[]>([]); // Changed from selectedMaterials
   const [selectedZones, setSelectedZones] = useState<string[]>([]);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [popularOnly, setPopularOnly] = useState(false);
@@ -391,24 +474,20 @@ export default function ShopPage() {
     return str?.toLowerCase().includes(searchString.toLowerCase()) || false;
   };
 
-  // Helper function to extract delivery zones - FIXED VERSION
+  // Helper function to extract delivery zones
   const getDeliveryZonesFromProduct = (product: ApiProduct): string[] => {
-    // Check if product.tags exists and is an array before using includes
     const tags = Array.isArray(product.tags) ? product.tags : [];
     
-    // If you have delivery zones in your product model, use that
-    // For now, we'll use a default based on tags or other criteria
     if (tags.includes('addis-ababa')) {
       return ['Addis Ababa', 'Bole', 'Megenagna', 'CMC'];
     }
-    return ['Addis Ababa']; // Default
+    return ['Addis Ababa'];
   };
 
   // Helper function to extract estimated weeks
   const extractEstimatedWeeks = (estimatedDelivery?: string): number | null => {
     if (!estimatedDelivery) return null;
     
-    // Try to extract weeks from string like "3-4 weeks" or "5 weeks"
     const weekMatch = estimatedDelivery.match(/(\d+)\s*(week|ሳምንት)/i);
     if (weekMatch) {
       return parseInt(weekMatch[1]);
@@ -422,22 +501,18 @@ export default function ShopPage() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
     
     return imagePaths.map(imagePath => {
-      // If it's already a full URL (starts with http), return as is
       if (imagePath.startsWith('http')) {
         return imagePath;
       }
       
-      // If it starts with /uploads, construct full URL
       if (imagePath.startsWith('/uploads/')) {
         return `${apiUrl}${imagePath}`;
       }
       
-      // If it's just a filename, assume it's in the uploads/products folder
       if (!imagePath.startsWith('/') && !imagePath.includes('http')) {
         return `${apiUrl}/uploads/products/${imagePath}`;
       }
       
-      // For any other case, try to construct the URL
       return `${apiUrl}${imagePath.startsWith('/') ? imagePath : `/${imagePath}`}`;
     });
   };
@@ -445,26 +520,32 @@ export default function ShopPage() {
   // Transform API products to frontend format
   const transformProducts = (apiProducts: ApiProduct[], sourceLanguage: 'en' | 'am'): TransformedProduct[] => {
     return apiProducts.map(product => {
-      // Safe defaults for all potentially undefined values
+      // Safe defaults
       const safeTags = Array.isArray(product.tags) ? product.tags : [];
       const safeImages = Array.isArray(product.images) ? product.images : [];
       const safeMaterial = product.material || 'Unknown';
       const safeUnit = product.unit || 'cm';
+      const productCode = product.productCode || '';
       
       // Construct proper image URLs
       const imageUrls = constructImageUrls(safeImages);
       
-      // FIX: Use safeIncludes for custom check
-      const isCustom = safeTags.includes('custom') || 
-                       safeIncludes(product.categoryEn, 'custom') || 
-                       safeIncludes(product.categoryAm, 'custom') ||
-                       safeTags.some(tag => safeIncludes(tag, 'custom'));
+      // Generate description from product code if available
+      const generatedDescription = productCode 
+        ? generateDescriptionFromCode(productCode, sourceLanguage)
+        : (sourceLanguage === 'en' ? product.descriptionEn || '' : product.descriptionAm || '');
+      
+      // Determine if custom from code prefix
+      const isCustom = productCode.startsWith('CU-') || 
+                       safeTags.includes('custom') || 
+                       safeIncludes(product.categoryEn, 'custom');
       
       return {
         id: product.id || `unknown-${Math.random().toString(36).substr(2, 9)}`,
+        productCode: productCode, // Added
         name_en: product.nameEn || 'Unnamed Product',
         name_am: product.nameAm || 'ያልተሰየመ ምርት',
-        description: sourceLanguage === 'en' ? product.descriptionEn || '' : product.descriptionAm || '',
+        description: generatedDescription,
         price: Number(product.price) || 0,
         currency: product.currency || 'ETB',
         category: sourceLanguage === 'en' ? product.categoryEn || 'Uncategorized' : product.categoryAm || 'ያልተደራጀ',
@@ -477,19 +558,28 @@ export default function ShopPage() {
         isCustom: Boolean(isCustom),
         deliveryZones: getDeliveryZonesFromProduct(product),
         images: imageUrls.length > 0 ? imageUrls : ['/products/default.jpg'],
-        imageUrls: imageUrls, // Store both for backward compatibility
+        imageUrls: imageUrls,
         estimatedWeeks: extractEstimatedWeeks(product.estimatedDelivery)
       };
     });
   };
 
+  // Extract unique product codes from products
+  const extractProductCodes = (products: ApiProduct[]): string[] => {
+    const codes = products
+      .map(p => p.productCode)
+      .filter(code => code && code.trim() !== '');
+    
+    // Remove duplicates and sort
+    return [...new Set(codes)].sort();
+  };
+
   // Reset filters when products change
   useEffect(() => {
     if (products.length === 0 && !isLoading) {
-      // Reset all filters when no products
       setSelectedCategory('all');
       setPriceRange([0, 100000]);
-      setSelectedMaterials([]);
+      setSelectedCodes([]);
       setSelectedZones([]);
       setInStockOnly(false);
       setPopularOnly(false);
@@ -505,6 +595,9 @@ export default function ShopPage() {
     setProducts(mockTransformedProducts);
     setFilteredProducts(mockTransformedProducts);
     setIsUsingMockData(true);
+    
+    // Extract product codes
+    productCodes = extractProductCodes(MOCK_PRODUCTS);
     
     // Update price range based on mock data
     if (mockTransformedProducts.length > 0) {
@@ -528,7 +621,7 @@ export default function ShopPage() {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
       
       const response = await fetch(`${apiUrl}/api/products`, {
         headers: {
@@ -545,10 +638,8 @@ export default function ShopPage() {
       
       const data = await response.json();
       
-      // Validate that we received an array
       if (!Array.isArray(data)) {
         console.warn('Expected array from API but received:', typeof data);
-        // Keep using mock data if API response is invalid
         setIsLoading(false);
         return;
       }
@@ -565,6 +656,9 @@ export default function ShopPage() {
       setFilteredProducts(transformedProducts);
       setIsUsingMockData(false);
       
+      // Extract product codes from API
+      productCodes = extractProductCodes(apiProducts);
+      
       // Update price range based on real data
       if (transformedProducts.length > 0) {
         const prices = transformedProducts.map(p => p.price).filter(price => !isNaN(price));
@@ -578,9 +672,7 @@ export default function ShopPage() {
     } catch (error: any) {
       console.error('Error fetching products from API:', error);
       
-      // If we're already using mock data, don't show error
       if (!isUsingMockData) {
-        // More specific error messages
         if (error.name === 'AbortError') {
           setError('Request timeout. Server is taking too long to respond.');
         } else if (error.message.includes('Failed to fetch')) {
@@ -593,8 +685,6 @@ export default function ShopPage() {
           setError('Failed to load products from server. Showing demo products.');
         }
       }
-      
-      // Already have mock data loaded, so just continue with that
     } finally {
       setIsLoading(false);
     }
@@ -606,14 +696,14 @@ export default function ShopPage() {
     
     let filtered = [...products];
 
-    // Search filter
+    // Search filter (now includes product code)
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter(product =>
+        product.productCode.toLowerCase().includes(query) ||
         product.name_en.toLowerCase().includes(query) ||
         product.name_am.includes(query) ||
-        product.description.toLowerCase().includes(query) ||
-        product.material.toLowerCase().includes(query)
+        product.description.toLowerCase().includes(query)
       );
     }
 
@@ -630,11 +720,11 @@ export default function ShopPage() {
       product.price >= priceRange[0] && product.price <= priceRange[1]
     );
 
-    // Material filter
-    if (selectedMaterials.length > 0) {
+    // Product Code filter (replaces material filter)
+    if (selectedCodes.length > 0) {
       filtered = filtered.filter(product =>
-        selectedMaterials.some(material =>
-          product.material.toLowerCase().includes(material.toLowerCase())
+        selectedCodes.some(code =>
+          product.productCode.toLowerCase().includes(code.toLowerCase())
         )
       );
     }
@@ -671,7 +761,7 @@ export default function ShopPage() {
     searchQuery,
     selectedCategory,
     priceRange,
-    selectedMaterials,
+    selectedCodes,
     selectedZones,
     inStockOnly,
     popularOnly,
@@ -705,7 +795,7 @@ export default function ShopPage() {
               <p className="text-amber-200">
                 {language === 'en' 
                   ? 'Handcrafted Ethiopian furniture for every room' 
-                  : 'ለእያንዳንዱ ክፍል በኢትዮጵያ ብልጽግና የተሰሩ የቤት እቃዎች'}
+                  : 'ለእያንዳንዱ ክፍል በኢትዮጵያ ብልጽግና የተሰራ የቤት እቃዎች'}
               </p>
             </div>
             <div className="flex items-center space-x-2 mt-4 md:mt-0">
@@ -827,19 +917,21 @@ export default function ShopPage() {
         {(!isLoading || isUsingMockData) && (
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filter Sidebar */}
+            {/* Note: You'll need to update FilterSidebar component to accept productCodes instead of materials */}
+            {/* For now, I'm passing an empty array for materials */}
             <FilterSidebar
               isOpen={isFilterOpen}
               onClose={() => setIsFilterOpen(false)}
               categories={categories}
-              materials={materials}
+              materials={productCodes} // Pass product codes instead of materials
               deliveryZones={deliveryZones}
               priceRange={priceRange}
               onPriceChange={setPriceRange}
               priceStats={priceStats}
               selectedCategory={selectedCategory}
               onCategoryChange={setSelectedCategory}
-              selectedMaterials={selectedMaterials}
-              onMaterialChange={setSelectedMaterials}
+              selectedMaterials={selectedCodes}
+              onMaterialChange={setSelectedCodes}
               selectedZones={selectedZones}
               onZoneChange={setSelectedZones}
               inStockOnly={inStockOnly}
@@ -860,7 +952,7 @@ export default function ShopPage() {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
                       type="text"
-                      placeholder={language === 'en' ? 'Search furniture...' : 'የቤት እቃ ይፈልጉ...'}
+                      placeholder={language === 'en' ? 'Search by product code or name...' : 'በምርት ኮድ ወይም ስም ይፈልጉ...'}
                       className="w-full md:w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -900,7 +992,7 @@ export default function ShopPage() {
                       onClick={() => {
                         setSelectedCategory('all');
                         setPriceRange([priceStats.min, priceStats.max]);
-                        setSelectedMaterials([]);
+                        setSelectedCodes([]);
                         setSelectedZones([]);
                         setInStockOnly(false);
                         setPopularOnly(false);
@@ -968,7 +1060,7 @@ export default function ShopPage() {
                     onClick={() => {
                       setSelectedCategory('all');
                       setPriceRange([priceStats.min, priceStats.max]);
-                      setSelectedMaterials([]);
+                      setSelectedCodes([]);
                       setSelectedZones([]);
                       setInStockOnly(false);
                       setPopularOnly(false);
@@ -1045,7 +1137,7 @@ export default function ShopPage() {
                 </div>
               )}
 
-              {/* Pagination (for later) */}
+              {/* Pagination */}
               {filteredProducts.length > 0 && (
                 <div className="mt-8 flex justify-center">
                   <div className="flex items-center space-x-2">
@@ -1119,8 +1211,6 @@ export default function ShopPage() {
           </div>
         )}
       </div>
-      
     </div>
-    
   );
 }
