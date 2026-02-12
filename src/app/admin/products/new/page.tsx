@@ -16,7 +16,8 @@ import {
   Palette,
   Ruler,
   PackageCheck,
-  Star
+  Star,
+  Hash // Add Hash icon for product code
 } from 'lucide-react';
 import Link from 'next/link';
 import ImageUpload from '@/components/admin/ImageUpload';
@@ -37,6 +38,7 @@ export default function NewProductPage() {
     descriptionAm: '',
     price: '',
     currency: 'ETB',
+    productCode: '', // Added product code field
     
     // Category & Type
     categoryEn: 'Living Room',
@@ -97,6 +99,48 @@ export default function NewProductPage() {
     }
   };
 
+  // Handle product code input - auto-generate or validate
+  const handleProductCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toUpperCase(); // Make it uppercase
+    setFormData(prev => ({ ...prev, productCode: value }));
+  };
+
+  // Auto-generate product code based on category and name
+  const generateProductCode = () => {
+    const category = formData.categoryEn;
+    const name = formData.nameEn;
+    
+    if (!category || !name) return;
+    
+    // Category prefix mapping
+    const prefixMap: Record<string, string> = {
+      'Living Room': 'LR',
+      'Bedroom': 'BR',
+      'Dining Room': 'DN',
+      'Office': 'OF',
+      'Outdoor': 'OD',
+      'Custom Orders': 'CU',
+      'Kids Room': 'KR'
+    };
+    
+    const prefix = prefixMap[category] || 'GEN';
+    
+    // Extract first letters from product name
+    const nameCode = name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .substring(0, 3);
+    
+    // Generate random number
+    const randomNum = Math.floor(100 + Math.random() * 900);
+    
+    const generatedCode = `${prefix}-${nameCode}-${randomNum}`;
+    
+    setFormData(prev => ({ ...prev, productCode: generatedCode }));
+  };
+
   const handleTagAdd = (tag: string) => {
     const trimmedTag = tag.trim().toLowerCase();
     if (trimmedTag && !formData.tags.includes(trimmedTag)) {
@@ -130,6 +174,11 @@ export default function NewProductPage() {
       return false;
     }
     
+    if (!formData.productCode.trim()) {
+      setError('Product code is required');
+      return false;
+    }
+    
     if (formData.images.length === 0) {
       setError('At least one product image is required');
       return false;
@@ -157,6 +206,7 @@ export default function NewProductPage() {
         descriptionAm: formData.descriptionAm || '',
         price: parseFloat(formData.price),
         currency: formData.currency,
+        productCode: formData.productCode, // Added product code
         
         // Category & Type
         categoryEn: formData.categoryEn,
@@ -182,7 +232,7 @@ export default function NewProductPage() {
               (typeof formData.tags === 'string' ? [formData.tags] : [])
       };
       
-      console.log('Sending product data (NO dimensions):', productData);
+      console.log('Sending product data (with productCode):', productData);
       
       const response = await fetch('http://localhost:5000/api/admin/products', {
         method: 'POST',
@@ -206,6 +256,7 @@ export default function NewProductPage() {
           descriptionAm: '',
           price: '',
           currency: 'ETB',
+          productCode: '', // Clear product code
           categoryEn: 'Living Room',
           categoryAm: 'የመቀመጫ ቤት',
           material: '',
@@ -384,6 +435,50 @@ export default function NewProductPage() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Product Code */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Product Code *
+              </label>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Hash className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    name="productCode"
+                    value={formData.productCode}
+                    onChange={handleProductCodeChange}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors bg-white text-gray-900 placeholder:text-gray-500 font-mono"
+                    placeholder="e.g., LR-SOF-001, BR-BED-012"
+                    required
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={generateProductCode}
+                  className="px-4 py-3 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition-colors whitespace-nowrap"
+                >
+                  Generate Code
+                </button>
+              </div>
+              <p className="mt-2 text-sm text-gray-500">
+                Enter a unique product code. Format: CATEGORY-NAME-NUMBER (e.g., LR-SOF-001 for Living Room Sofa)
+              </p>
+              <div className="mt-2 text-xs text-gray-500">
+                <span className="font-medium">Code Prefix Guide:</span>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">LR - Living Room</span>
+                  <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded">BR - Bedroom</span>
+                  <span className="px-2 py-1 bg-green-100 text-green-800 rounded">DN - Dining Room</span>
+                  <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded">OF - Office</span>
+                  <span className="px-2 py-1 bg-teal-100 text-teal-800 rounded">OD - Outdoor</span>
+                  <span className="px-2 py-1 bg-red-100 text-red-800 rounded">CU - Custom</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -766,6 +861,7 @@ export default function NewProductPage() {
             <p className="text-sm font-medium text-blue-700 mb-1">Traditional Sofa:</p>
             <ul className="text-xs text-blue-600 space-y-1">
               <li>Name: "Ethiopian Traditional Sofa"</li>
+              <li>Product Code: "LR-SOF-001"</li>
               <li>Price: 25000</li>
               <li>Category: "Living Room"</li>
               <li>Material: "Solid Wood & Fabric"</li>
@@ -775,6 +871,7 @@ export default function NewProductPage() {
             <p className="text-sm font-medium text-blue-700 mb-1">Modern Desk:</p>
             <ul className="text-xs text-blue-600 space-y-1">
               <li>Name: "Modern Office Desk"</li>
+              <li>Product Code: "OF-DSK-012"</li>
               <li>Price: 12500</li>
               <li>Category: "Office"</li>
               <li>Material: "Metal and Glass"</li>

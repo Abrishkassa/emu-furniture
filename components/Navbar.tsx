@@ -14,7 +14,7 @@ export default function Navbar() {
     { name: 'Shop', href: '/shop' },
     { name: 'Custom Orders', href: '/custom' },
     { name: 'Showroom', href: '/showroom' },
-    { name: 'Blog', href: '/blog' },
+    { name: 'Our Profile', href: '/blog' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -75,10 +75,7 @@ export default function Navbar() {
             </a>
             
             <button className="p-2 relative">
-              <ShoppingCart className="w-6 h-6 text-amber-700 dark:text-amber-500" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                3
-              </span>
+              
             </button>
             
             {/* Mobile menu button */}
