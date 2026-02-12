@@ -52,7 +52,7 @@ export default function ProfilePage() {
   // 🏆 30+ Years Journey
   const milestones: Milestone[] = [
     {
-      year: "1996",
+      year: "1990",
       title: { 
         en: "The Beginning in Negelle Borena", 
         am: "ጅምር በነገሌ ቦረና" 
@@ -64,7 +64,7 @@ export default function ProfilePage() {
       icon: Mountain
     },
     {
-      year: "2000",
+      year: "1992",
       title: { 
         en: "First Signature Collection", 
         am: "የመጀመሪያ የፊርማ ስብስብ" 
@@ -76,7 +76,7 @@ export default function ProfilePage() {
       icon: Crown
     },
     {
-      year: "2006",
+      year: "1994",
       title: { 
         en: "The Move to Hawassa", 
         am: "ወደ ሃዋሳ ሽግግር" 
@@ -88,7 +88,7 @@ export default function ProfilePage() {
       icon: Compass
     },
     {
-      year: "2012",
+      year: "2002",
       title: { 
         en: "20 Years of Trust", 
         am: "20 ዓመታት የመተማመን" 
@@ -100,7 +100,7 @@ export default function ProfilePage() {
       icon: Medal
     },
     {
-      year: "2018",
+      year: "2010",
       title: { 
         en: "Design Excellence Recognition", 
         am: "የዲዛይን ልህቀት እውቅና" 
@@ -112,7 +112,7 @@ export default function ProfilePage() {
       icon: Award
     },
     {
-      year: "2024",
+      year: "2018",
       title: { 
         en: "30+ Years & Beyond", 
         am: "ከ30+ ዓመታት በላይ" 
@@ -195,7 +195,7 @@ export default function ProfilePage() {
         am: "በመላ ኢትዮጵያ" 
       },
       description: { 
-        en: "From Addis to Jijiga, Bahir Dar to Moyale. A phone call or message connects you to our craft. Delivery within one month for most custom orders.", 
+        en: "From Addis to Adama, Ziway to Hawassa. A phone call or message connects you to our craft. Delivery within one month for most custom orders.", 
         am: "ከአዲስ አበባ እስከ ጅጅጋ፣ ባህር ዳር እስከ ሞያሌ። አንድ ጥሪ ወይም መልእክት ከጥበብ ስራችን ጋር ያገናኝዎታል። ለአብዛኞቹ ብጁ ትዕዛዞች በአንድ ወር ጊዜ ውስጥ ማድረስ።" 
       }
     }
@@ -203,7 +203,7 @@ export default function ProfilePage() {
 
   // 👑 The Master & His Team
   const founder = {
-    name: { en: "Alemayehu Desta", am: "አለማየሁ ደስታ" },
+    name: { en: "Mr. Mengistu", am: "አለማየሁ ደስታ" },
     title: { en: "Founder & Senior Master Designer", am: "መስራች እና ከፍተኛ ዋና ዲዛይነር" },
     experience: "30+ Years",
     philosophy: {

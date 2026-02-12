@@ -68,6 +68,7 @@ router.get('/', async (req, res) => {
         id: true,
         nameEn: true,
         nameAm: true,
+        productCode: true,
         descriptionEn: true,
         descriptionAm: true,
         price: true,
@@ -119,6 +120,7 @@ router.get('/debug', async (req, res) => {
         id: true,
         nameEn: true,
         nameAm: true,
+        productCode: true,
         price: true,
         categoryEn: true,
         createdAt: true
