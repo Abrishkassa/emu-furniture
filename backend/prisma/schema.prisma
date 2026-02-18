@@ -45,7 +45,7 @@ model Product {
   id                String   @id @default(cuid())
   nameEn            String
   nameAm            String
-  productCode       String   @unique // Unique product code for SKU/inventory
+  productCode       String   @default("Emu-123")  
   descriptionEn     String
   descriptionAm     String
   price             Float

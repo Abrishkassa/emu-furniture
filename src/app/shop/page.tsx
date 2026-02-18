@@ -431,7 +431,7 @@ type ApiProduct = {
 // Type for transformed product (updated with productCode)
 type TransformedProduct = {
   id: string;
-  productCode: string; // Added
+  // Added
   name_en: string;
   name_am: string;
   description: string;
@@ -843,12 +843,12 @@ export default function ShopPage() {
                 <p className="text-amber-200 text-sm flex items-center">
                   {isUsingMockData ? (
                     <>
-                      <span className="mr-2">📱</span>
+                      <span className="mr-2"></span>
                       {language === 'en' ? 'Demo Mode' : 'ደሞ ሞድ'}
                     </>
                   ) : (
                     <>
-                      <span className="mr-2">🟢</span>
+                      <span className="mr-2"></span>
                       {language === 'en' ? 'Live Data' : 'ቀጥታ ዳታ'}
                     </>
                   )}

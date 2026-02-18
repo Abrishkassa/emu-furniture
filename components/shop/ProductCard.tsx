@@ -15,7 +15,6 @@ import {
 // Define types at the top
 type ProductType = {
   id: string | number;
-  productCode: string; // Added product code
   name_en: string;
   name_am: string;
   description: string;
@@ -174,12 +173,6 @@ export default function ProductCard({ product, viewMode, language }: ProductCard
             </div>
           )}
 
-          {/* Product Code Badge */}
-          <div className="absolute top-4 left-4 ml-16">
-            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium font-mono">
-              {product.productCode}
-            </span>
-          </div>
 
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
             {product.inStock ? (

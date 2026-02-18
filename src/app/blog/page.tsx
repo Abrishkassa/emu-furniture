@@ -125,7 +125,7 @@ export default function ProfilePage() {
     }
   ];
 
-  // 💎 Core Values & Quality Criteria
+  //  Core Values & Quality Criteria
   const values: Value[] = [
     {
       id: 1,
@@ -214,28 +214,28 @@ export default function ProfilePage() {
 
   const team: TeamMember[] = [
     {
-      name: { en: "Tigist Haile", am: "ትግስት ኃይሌ" },
-      role: { en: "Lead Furniture Engineer", am: "ዋና የቤት እቃ ኢንጂነር" },
+      name: { en: "Mrs. Emu", am: "emu" },
+      role: { en: "Owner", am: "ዋና የቤት እቃ ኢንጂነር" },
       description: { 
-        en: "15+ years translating dreams into technical drawings. Every measurement is verified twice.", 
+        en: "20+ years translating dreams into technical drawings. Every measurement is verified twice.", 
         am: "ከ15+ ዓመታት በላይ ህልሞችን ወደ ቴክኒካል ንድፍ በመቀየር። እያንዳንዱ ልኬት ሁለት ጊዜ ይረጋገጣል።" 
       },
       icon: Ruler
     },
     {
-      name: { en: "Biruk Assefa", am: "ብሩክ አስፋ" },
-      role: { en: "Master Finisher", am: "ዋና አጠናቃቂ" },
+      name: { en: "Mr. Melkamu", am: "melkamu" },
+      role: { en: "Supervisor", am: "ዋና አጠናቃቂ" },
       description: { 
-        en: "The man who makes wood sing. Specializes in natural oil finishes that reveal the soul of Ethiopian timber.", 
+        en: "The man who controls quality. Specializes in quality control and customer satisfaction that reveal the the quality of our company", 
         am: "እንጨትን የሚያወድስ ሰው። የኢትዮጵያ እንጨት ነፍስ የሚያሳዩ የተፈጥሮ ዘይት አጨራረሶች ላይ የተካነ።" 
       },
       icon: Brush
     },
     {
-      name: { en: "Meron Bekele", am: "ሜሮን በቀለ" },
-      role: { en: "Client Experience & Trust", am: "የደንበኛ ልምድ እና መተማመን" },
+      name: { en: "Yoni", am: "yoni" },
+      role: { en: "Client Experience & Packaging", am: "የደንበኛ ልምድ እና መተማመን" },
       description: { 
-        en: "20+ year client relationships. She remembers your preferences, your home, and what you loved last time.", 
+        en: " client relationships. He remembers your preferences, your home, and what you loved last time.", 
         am: "ከ20+ ዓመታት በላይ የደንበኛ ግንኙነት። ምርጫዎችዎን፣ ቤትዎን፣ እና ባለፈው ጊዜ የወደዱትን ታስታውሳለች።" 
       },
       icon: HandHeart
