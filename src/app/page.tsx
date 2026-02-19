@@ -122,8 +122,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <ThemeToggle />
-      
+
+  {/* MODIFIED: ThemeToggle wrapped to avoid mobile overlap */}
+  <div className="fixed top-4 right-16 z-40 md:static md:top-auto md:right-auto">
+  <ThemeToggle />
+</div>
+
       
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-amber-900 via-amber-800 to-amber-700 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 text-white py-20 px-4 overflow-hidden">
