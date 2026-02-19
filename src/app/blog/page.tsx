@@ -253,10 +253,10 @@ export default function ProfilePage() {
       }
     },
     {
-      name: "Hawassa University",
+      name: "Temesgen Family",
       since: "2010",
       quote: {
-        en: "15 years of furnishing our faculty offices. They still look timeless. That's quality.",
+        en: "15 years of furnishing our apartment. They still look timeless. That's quality.",
         am: "15 ዓመታት የፋኩልቲ ቢሮዎቻችንን ሲያስጌጡ ቆይተዋል። አሁንም ዘመናቸውን ያልጠበቁ ይመስላሉ። ይህ ነው ጥራት።"
       }
     }
