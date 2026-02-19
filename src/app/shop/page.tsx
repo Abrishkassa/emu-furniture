@@ -430,6 +430,7 @@ type ApiProduct = {
 
 // Type for transformed product (updated with productCode)
 type TransformedProduct = {
+  productCode: any;
   id: string;
   // Added
   name_en: string;
