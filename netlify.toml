@@ -5,6 +5,15 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Disable secrets scanning for public environment variables
+[build.processing]
+  skip_processing = false
+
+[build.processing.secrets]
+  enabled = true
+  # Omit NEXT_PUBLIC_ variables from secrets scanning (they're meant to be public)
+  omit_keys = ["NEXT_PUBLIC_API_URL"]
+
 # Next.js specific configuration
 [[plugins]]
   package = "@netlify/plugin-nextjs"
