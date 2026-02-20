@@ -17,6 +17,7 @@ type ProductType = {
   id: string | number;
   name_en: string;
   name_am: string;
+  productCode?: string;
   description: string;
   price: number;
   currency: string;
