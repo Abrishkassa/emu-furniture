@@ -20,6 +20,7 @@ export type ApiProduct = {
   id: string;
   nameEn: string;
   nameAm: string;
+  productCode: string;
   descriptionEn: string;
   descriptionAm: string;
   price: number;
