@@ -27,8 +27,14 @@ uploadDirs.forEach(dir => {
 });
 
 // =============== MIDDLEWARE ===============
+const allowedOrigins = [
+  'http://localhost:3000',
+  process.env.FRONTEND_URL,
+  'https://emu-furniture.netlify.app', // Update this with your actual Netlify URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(express.json());
