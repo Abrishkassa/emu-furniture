@@ -30,6 +30,8 @@ uploadDirs.forEach(dir => {
 const allowedOrigins = [
   'http://localhost:3000',
   'https://emu-furniture.netlify.app',
+  'https://emufurniturehawassa.com',
+  'https://www.emufurniturehawassa.com',
   process.env.FRONTEND_URL,
 ].filter((origin): origin is string => Boolean(origin));
 
