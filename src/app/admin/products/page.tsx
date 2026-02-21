@@ -32,8 +32,13 @@ export default function AdminProductsPage() {
   const fetchProducts = async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('adminToken');
+      
       const res = await fetch(`${apiUrl}/api/admin/products`, {
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       if (res.ok) {
@@ -54,9 +59,14 @@ export default function AdminProductsPage() {
     
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('adminToken');
+      
       const res = await fetch(`${apiUrl}/api/admin/products/${id}`, {
         method: 'DELETE',
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       if (res.ok) {

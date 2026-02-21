@@ -235,10 +235,13 @@ export default function NewProductPage() {
       console.log('Sending product data (with productCode):', productData);
       
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('adminToken');
+      
       const response = await fetch(`${apiUrl}/api/admin/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         credentials: 'include',
         body: JSON.stringify(productData),

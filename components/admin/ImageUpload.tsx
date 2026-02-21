@@ -107,9 +107,14 @@ export default function ImageUpload({
       });
 
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('adminToken');
+      
       const response = await fetch(`${apiUrl}/api/upload/multiple`, {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: formData,
       });
 
@@ -137,9 +142,14 @@ export default function ImageUpload({
   const handleDeleteImage = async (filename: string) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('adminToken');
+      
       const response = await fetch(`${apiUrl}/api/upload/${filename}`, {
         method: 'DELETE',
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       const data = await response.json();
@@ -166,10 +176,13 @@ export default function ImageUpload({
     try {
       const filenames = uploadedImages.map(img => img.filename);
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('adminToken');
+      
       const response = await fetch(`${apiUrl}/api/upload/bulk/delete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         credentials: 'include',
         body: JSON.stringify({ filenames })
