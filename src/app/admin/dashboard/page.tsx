@@ -28,8 +28,13 @@ export default function AdminDashboardPage() {
   const fetchDashboardData = async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('adminToken');
+      
       const res = await fetch(`${apiUrl}/api/admin/dashboard/stats`, {
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       if (res.ok) {
