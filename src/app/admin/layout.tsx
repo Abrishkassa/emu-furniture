@@ -48,7 +48,8 @@ export default function AdminLayout({
   const checkAuth = async () => {
   try {
     console.log('🔐 Checking authentication at /api/auth/check...');
-    const res = await fetch('http://localhost:5000/api/auth/check', { // CORRECT
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const res = await fetch(`${apiUrl}/api/auth/check`, {
       credentials: 'include'
     });
     
@@ -77,7 +78,8 @@ export default function AdminLayout({
 };
 
   const handleLogout = async () => {
-    await fetch('http://localhost:5000/api/auth/logout', {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    await fetch(`${apiUrl}/api/auth/logout`, {
       method: 'POST',
       credentials: 'include'
     });

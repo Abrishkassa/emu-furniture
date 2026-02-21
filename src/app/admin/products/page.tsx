@@ -31,7 +31,8 @@ export default function AdminProductsPage() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/products', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/admin/products`, {
         credentials: 'include'
       });
       
@@ -52,7 +53,8 @@ export default function AdminProductsPage() {
     if (!confirm('Are you sure you want to delete this product?')) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/products/${id}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/admin/products/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });

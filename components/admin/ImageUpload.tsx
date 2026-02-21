@@ -106,7 +106,8 @@ export default function ImageUpload({
         formData.append('images', file);
       });
 
-      const response = await fetch('http://localhost:5000/api/upload/multiple', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/upload/multiple`, {
         method: 'POST',
         credentials: 'include',
         body: formData,
@@ -135,7 +136,8 @@ export default function ImageUpload({
 
   const handleDeleteImage = async (filename: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/upload/${filename}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/upload/${filename}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -163,7 +165,8 @@ export default function ImageUpload({
 
     try {
       const filenames = uploadedImages.map(img => img.filename);
-      const response = await fetch('http://localhost:5000/api/upload/bulk/delete', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/upload/bulk/delete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
