@@ -47,10 +47,22 @@ export default function AdminLayout({
 
   const checkAuth = async () => {
   try {
-    console.log('🔐 Checking authentication at /api/auth/check...');
+    console.log('🔐 Checking authentication...');
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const token = localStorage.getItem('adminToken');
+    
+    if (!token) {
+      console.log('No token found, redirecting to login');
+      router.push('/admin/login');
+      setLoading(false);
+      return;
+    }
+    
     const res = await fetch(`${apiUrl}/api/auth/check`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     });
     
     console.log('Auth check status:', res.status);
@@ -63,14 +75,20 @@ export default function AdminLayout({
         setUser(data.user);
       } else {
         console.log('Not authenticated, redirecting to login');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
         router.push('/admin/login');
       }
     } else {
       console.log('Auth check failed, redirecting to login');
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUser');
       router.push('/admin/login');
     }
   } catch (error) {
     console.error('Auth check error:', error);
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
     router.push('/admin/login');
   } finally {
     setLoading(false);
@@ -79,10 +97,18 @@ export default function AdminLayout({
 
   const handleLogout = async () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const token = localStorage.getItem('adminToken');
+    
     await fetch(`${apiUrl}/api/auth/logout`, {
       method: 'POST',
-      credentials: 'include'
+      credentials: 'include',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     });
+    
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
     router.push('/admin/login');
   };
 
