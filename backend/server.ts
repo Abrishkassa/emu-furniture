@@ -9,7 +9,7 @@ import fs from 'fs';
 dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const prisma = new PrismaClient();
 
 // =============== CREATE UPLOAD DIRECTORIES ===============
