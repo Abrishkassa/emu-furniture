@@ -1,14 +1,20 @@
 const express = require('express');
-const upload = require('../middleware/upload');
+const multer = require('multer');
+const sharp = require('sharp');
+const { createClient } = require('@supabase/supabase-js');
 const { requireAuth } = require('../middleware/auth');
-const ImageProcessor = require('../utils/imageProcessor');
 const path = require('path');
-const fs = require('fs');
 
-// CREATE ROUTER FIRST!
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+const BUCKET_NAME = process.env.SUPABASE_BUCKET || 'products';
+
 const router = express.Router();
 
-// Then add your test routes
+// Test routes (keep as is)
 router.get('/test', (req, res) => {
   res.json({ 
     success: true, 
@@ -25,9 +31,40 @@ router.post('/test', (req, res) => {
   });
 });
 
-// Helper function to get full URL
-const getFullUrl = (req, filePath) => {
-  return `${req.protocol}://${req.get('host')}${filePath}`;
+// Configure multer to use memory storage (no local files)
+const storage = multer.memoryStorage();
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
+
+// Helper to generate unique filename
+const generateFileName = (originalname, suffix = '') => {
+  const timestamp = Date.now();
+  const random = Math.round(Math.random() * 1e9);
+  const ext = path.extname(originalname);
+  const baseName = path.basename(originalname, ext);
+  return `${baseName}${suffix}-${timestamp}-${random}${ext}`;
+};
+
+// Upload a file buffer to Supabase Storage
+const uploadToSupabase = async (buffer, fileName, contentType) => {
+  const filePath = `products/${fileName}`;
+  const { error } = await supabase.storage
+    .from(BUCKET_NAME)
+    .upload(filePath, buffer, {
+      contentType,
+      cacheControl: '3600',
+      upsert: false
+    });
+
+  if (error) throw error;
+
+  const { data: publicUrlData } = supabase.storage
+    .from(BUCKET_NAME)
+    .getPublicUrl(filePath);
+
+  return publicUrlData.publicUrl;
 };
 
 // Single image upload
@@ -40,34 +77,58 @@ router.post('/single', requireAuth, upload.single('image'), async (req, res) => 
       });
     }
 
-    // Get image info
-    const imageInfo = await ImageProcessor.getImageInfo(req.file.path);
-    
-    // Create thumbnail
-    const thumbnailPath = await ImageProcessor.createThumbnail(req.file.path, req.file.filename);
-    
-    // Create medium size
-    const mediumPath = await ImageProcessor.createMediumSize(req.file.path, req.file.filename);
-    
-    const responseData = {
-      filename: req.file.filename,
-      originalname: req.file.originalname,
-      size: req.file.size,
-      mimetype: req.file.mimetype,
-      originalUrl: `/uploads/products/${req.file.filename}`,
-      thumbnailUrl: thumbnailPath,
-      mediumUrl: mediumPath,
-      dimensions: imageInfo ? {
-        width: imageInfo.width,
-        height: imageInfo.height
-      } : null
-    };
+    const file = req.file;
+    const originalName = file.originalname;
+    const buffer = file.buffer;
+    const contentType = file.mimetype;
 
-    // Add full URLs
-    responseData.fullUrls = {
-      original: getFullUrl(req, responseData.originalUrl),
-      thumbnail: thumbnailPath ? getFullUrl(req, thumbnailPath) : null,
-      medium: mediumPath ? getFullUrl(req, mediumPath) : null
+    // Generate filenames
+    const originalFileName = generateFileName(originalName);
+    const thumbnailFileName = generateFileName(originalName, '-thumb');
+    const mediumFileName = generateFileName(originalName, '-medium');
+
+    // Process images with sharp
+    const image = sharp(buffer);
+    const metadata = await image.metadata();
+
+    // Generate thumbnail (300px width)
+    const thumbnailBuffer = await image
+      .clone()
+      .resize({ width: 300, withoutEnlargement: true })
+      .toBuffer();
+
+    // Generate medium size (800px width)
+    const mediumBuffer = await image
+      .clone()
+      .resize({ width: 800, withoutEnlargement: true })
+      .toBuffer();
+
+    // Upload all three versions to Supabase
+    const [originalUrl, thumbnailUrl, mediumUrl] = await Promise.all([
+      uploadToSupabase(buffer, originalFileName, contentType),
+      uploadToSupabase(thumbnailBuffer, thumbnailFileName, contentType),
+      uploadToSupabase(mediumBuffer, mediumFileName, contentType)
+    ]);
+
+    // Return the full Supabase URLs
+    const responseData = {
+      filename: originalFileName,
+      originalname: originalName,
+      size: file.size,
+      mimetype: contentType,
+      // You can keep these for backward compatibility if needed
+      originalUrl: `/uploads/products/${originalFileName}`,
+      thumbnailUrl: `/uploads/thumbnails/${thumbnailFileName}`,
+      mediumUrl: `/uploads/medium/${mediumFileName}`,
+      dimensions: {
+        width: metadata.width,
+        height: metadata.height
+      },
+      fullUrls: {
+        original: originalUrl,
+        thumbnail: thumbnailUrl,
+        medium: mediumUrl
+      }
     };
 
     res.json({
@@ -78,14 +139,6 @@ router.post('/single', requireAuth, upload.single('image'), async (req, res) => 
 
   } catch (error) {
     console.error('Upload error:', error);
-    
-    // Clean up uploaded file if error occurred
-    if (req.file && req.file.path) {
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.error('Failed to cleanup file:', err);
-      });
-    }
-    
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to upload image'
@@ -106,41 +159,56 @@ router.post('/multiple', requireAuth, upload.array('images', 10), async (req, re
     const uploadedImages = [];
     const errors = [];
 
-    // Process each image
     for (const file of req.files) {
       try {
-        const imageInfo = await ImageProcessor.getImageInfo(file.path);
-        const thumbnailPath = await ImageProcessor.createThumbnail(file.path, file.filename);
-        const mediumPath = await ImageProcessor.createMediumSize(file.path, file.filename);
+        const buffer = file.buffer;
+        const originalName = file.originalname;
+        const contentType = file.mimetype;
+
+        const originalFileName = generateFileName(originalName);
+        const thumbnailFileName = generateFileName(originalName, '-thumb');
+        const mediumFileName = generateFileName(originalName, '-medium');
+
+        const image = sharp(buffer);
+        const metadata = await image.metadata();
+
+        const thumbnailBuffer = await image
+          .clone()
+          .resize({ width: 300, withoutEnlargement: true })
+          .toBuffer();
+
+        const mediumBuffer = await image
+          .clone()
+          .resize({ width: 800, withoutEnlargement: true })
+          .toBuffer();
+
+        const [originalUrl, thumbnailUrl, mediumUrl] = await Promise.all([
+          uploadToSupabase(buffer, originalFileName, contentType),
+          uploadToSupabase(thumbnailBuffer, thumbnailFileName, contentType),
+          uploadToSupabase(mediumBuffer, mediumFileName, contentType)
+        ]);
 
         uploadedImages.push({
-          filename: file.filename,
-          originalname: file.originalname,
+          filename: originalFileName,
+          originalname: originalName,
           size: file.size,
-          mimetype: file.mimetype,
-          originalUrl: `/uploads/products/${file.filename}`,
-          thumbnailUrl: thumbnailPath,
-          mediumUrl: mediumPath,
-          dimensions: imageInfo ? {
-            width: imageInfo.width,
-            height: imageInfo.height
-          } : null,
+          mimetype: contentType,
+          originalUrl: `/uploads/products/${originalFileName}`,
+          thumbnailUrl: `/uploads/thumbnails/${thumbnailFileName}`,
+          mediumUrl: `/uploads/medium/${mediumFileName}`,
+          dimensions: {
+            width: metadata.width,
+            height: metadata.height
+          },
           fullUrls: {
-            original: getFullUrl(req, `/uploads/products/${file.filename}`),
-            thumbnail: thumbnailPath ? getFullUrl(req, thumbnailPath) : null,
-            medium: mediumPath ? getFullUrl(req, mediumPath) : null
+            original: originalUrl,
+            thumbnail: thumbnailUrl,
+            medium: mediumUrl
           }
         });
       } catch (error) {
         console.error(`Error processing file ${file.originalname}:`, error);
         errors.push(file.originalname);
-        
-        // Clean up failed file
-        if (file.path) {
-          fs.unlink(file.path, (err) => {
-            if (err) console.error('Failed to cleanup file:', err);
-          });
-        }
       }
     }
 
@@ -168,18 +236,6 @@ router.post('/multiple', requireAuth, upload.array('images', 10), async (req, re
 
   } catch (error) {
     console.error('Upload error:', error);
-    
-    // Clean up all files if error occurred
-    if (req.files) {
-      req.files.forEach(file => {
-        if (file.path) {
-          fs.unlink(file.path, (err) => {
-            if (err) console.error('Failed to cleanup file:', err);
-          });
-        }
-      });
-    }
-    
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to upload images'
@@ -187,21 +243,34 @@ router.post('/multiple', requireAuth, upload.array('images', 10), async (req, re
   }
 });
 
-// Get all uploaded images
+// Get all uploaded images from Supabase Storage
 router.get('/list', requireAuth, async (req, res) => {
   try {
-    const uploadDir = 'public/uploads/products';
-    const files = fs.readdirSync(uploadDir);
-    
-    const images = files
-      .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-      .map(file => ({
-        filename: file,
-        url: `/uploads/products/${file}`,
-        fullUrl: getFullUrl(req, `/uploads/products/${file}`),
-        thumbnailUrl: `/uploads/thumbnails/${file}`,
-        thumbnailFullUrl: getFullUrl(req, `/uploads/thumbnails/${file}`)
-      }));
+    const { data, error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .list('products', {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: 'name', order: 'asc' }
+      });
+
+    if (error) throw error;
+
+    const images = data
+      .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name))
+      .map(file => {
+        const { data: publicUrlData } = supabase.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(`products/${file.name}`);
+        
+        return {
+          filename: file.name,
+          url: `/uploads/products/${file.name}`,
+          fullUrl: publicUrlData.publicUrl,
+          thumbnailUrl: `/uploads/thumbnails/${file.name}`,
+          thumbnailFullUrl: publicUrlData.publicUrl.replace('/products/', '/thumbnails/') // adjust if needed
+        };
+      });
 
     res.json({
       success: true,
@@ -219,126 +288,76 @@ router.get('/list', requireAuth, async (req, res) => {
   }
 });
 
-// Delete uploaded image
-router.delete('/:filename', requireAuth, (req, res) => {
+// Delete image from Supabase Storage
+router.delete('/:filename', requireAuth, async (req, res) => {
   try {
     const filename = req.params.filename;
-    
-    // Define paths
-    const originalPath = path.join('public/uploads/products', filename);
-    const thumbnailPath = path.join('public/uploads/thumbnails', filename);
-    const mediumPath = path.join('public/uploads/medium', filename);
-    
-    let deletedCount = 0;
-    
-    // Delete original
-    if (fs.existsSync(originalPath)) {
-      fs.unlinkSync(originalPath);
-      deletedCount++;
-    }
-    
-    // Delete thumbnail
-    if (fs.existsSync(thumbnailPath)) {
-      fs.unlinkSync(thumbnailPath);
-      deletedCount++;
-    }
-    
-    // Delete medium size
-    if (fs.existsSync(mediumPath)) {
-      fs.unlinkSync(mediumPath);
-      deletedCount++;
-    }
-    
-    if (deletedCount === 0) {
-      return res.status(404).json({
-        success: false,
-        error: 'Image not found'
-      });
-    }
-    
+    const baseName = path.basename(filename, path.extname(filename));
+    const ext = path.extname(filename);
+
+    // Generate expected variant filenames (thumb and medium)
+    const thumbnailName = `${baseName}-thumb${ext}`;
+    const mediumName = `${baseName}-medium${ext}`;
+
+    const filesToDelete = [
+      `products/${filename}`,
+      `products/${thumbnailName}`,
+      `products/${mediumName}`
+    ];
+
+    const { error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .remove(filesToDelete);
+
+    if (error) throw error;
+
     res.json({
       success: true,
-      message: 'Image deleted successfully',
-      data: {
-        filesDeleted: deletedCount
-      }
+      message: 'Image and its variants deleted successfully',
+      data: { filesDeleted: filesToDelete.length }
     });
   } catch (error) {
     console.error('Delete error:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message || 'Failed to delete image'
     });
   }
 });
 
-// Bulk delete images
-router.post('/bulk/delete', requireAuth, (req, res) => {
+// Bulk delete
+router.post('/bulk/delete', requireAuth, async (req, res) => {
   try {
     const { filenames } = req.body;
     
     if (!Array.isArray(filenames) || filenames.length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: 'No filenames provided'
-      });
+      return res.status(400).json({ success: false, error: 'No filenames provided' });
     }
-    
-    let deletedCount = 0;
-    const errors = [];
-    
+
+    const filesToDelete = [];
     filenames.forEach(filename => {
-      try {
-        const originalPath = path.join('public/uploads/products', filename);
-        const thumbnailPath = path.join('public/uploads/thumbnails', filename);
-        const mediumPath = path.join('public/uploads/medium', filename);
-        
-        // Delete original
-        if (fs.existsSync(originalPath)) {
-          fs.unlinkSync(originalPath);
-        }
-        
-        // Delete thumbnail
-        if (fs.existsSync(thumbnailPath)) {
-          fs.unlinkSync(thumbnailPath);
-        }
-        
-        // Delete medium size
-        if (fs.existsSync(mediumPath)) {
-          fs.unlinkSync(mediumPath);
-        }
-        
-        deletedCount++;
-      } catch (error) {
-        errors.push({ filename, error: error.message });
-      }
+      const baseName = path.basename(filename, path.extname(filename));
+      const ext = path.extname(filename);
+      filesToDelete.push(`products/${filename}`);
+      filesToDelete.push(`products/${baseName}-thumb${ext}`);
+      filesToDelete.push(`products/${baseName}-medium${ext}`);
     });
-    
-    const response = {
+
+    const { error, data } = await supabase.storage
+      .from(BUCKET_NAME)
+      .remove(filesToDelete);
+
+    if (error) throw error;
+
+    res.json({
       success: true,
-      message: `${deletedCount} image(s) deleted successfully`,
-      data: {
-        deletedCount,
-        totalRequested: filenames.length
-      }
-    };
-    
-    if (errors.length > 0) {
-      response.warnings = {
-        failedDeletions: errors,
-        message: `${errors.length} file(s) failed to delete`
-      };
-    }
-    
-    res.json(response);
+      message: `${data?.length || 0} file(s) deleted successfully`,
+      data: { deletedCount: data?.length || 0, totalRequested: filenames.length * 3 }
+    });
   } catch (error) {
     console.error('Bulk delete error:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// Don't forget to export the router!
 module.exports = router;
