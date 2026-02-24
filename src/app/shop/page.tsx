@@ -479,10 +479,10 @@ export default function ShopPage() {
   const getDeliveryZonesFromProduct = (product: ApiProduct): string[] => {
     const tags = Array.isArray(product.tags) ? product.tags : [];
     
-    if (tags.includes('addis-ababa')) {
-      return ['Addis Ababa', 'Bole', 'Megenagna', 'CMC'];
+    if (tags.includes('hawassa')) {
+      return ['Hawassa', 'Atote', 'Piyasa', 'Menhariya'];
     }
-    return ['Addis Ababa'];
+    return ['Hawassa'];
   };
 
   // Helper function to extract estimated weeks
@@ -622,7 +622,7 @@ export default function ShopPage() {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds
       
       const response = await fetch(`${apiUrl}/api/products`, {
         headers: {
