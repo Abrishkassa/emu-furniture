@@ -13,10 +13,16 @@ export const metadata: Metadata = {
     'Modern Furniture Ethiopia',
     'Furniture Shop in Hawassa',
   ],
+
+  verification: {
+    google: 'iGWjhSjTemPqngmWsQyLLSCkOnMeJvc5GwOuDR7NP0k',
+  },
+
   robots: {
     index: true,
     follow: true,
   },
+
   alternates: {
     canonical: 'https://emufurniturehawassa.com/',
   },
