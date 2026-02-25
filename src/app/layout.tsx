@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   icons: {
     icon: '/emu.png', 
   },
+    verification: { google: 'iGWjhSjTemPqngmWsQyLLSCkOnMeJvc5GwOuDR7NP0k' },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({
