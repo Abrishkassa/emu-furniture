@@ -7,6 +7,11 @@ export const metadata: Metadata = {
     'EMU Furniture Hawassa sells modern sofas, beds, dining tables, office chairs, and custom furniture in Hawassa, Ethiopia.',
   keywords: [
     'EMU Furniture Hawassa',
+    'EMU Furniture',
+    'EMU',
+    'Luxury Furniture',
+    'Atote Hawassa',
+    'best furniture in hawassa',
     'Furniture in Hawassa',
     'Sofa in Hawassa',
     'Bed in Hawassa',
@@ -16,6 +21,7 @@ export const metadata: Metadata = {
 
   verification: {
     google: 'iGWjhSjTemPqngmWsQyLLSCkOnMeJvc5GwOuDR7NP0k',
+    
   },
 
   robots: {
