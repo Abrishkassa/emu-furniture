@@ -122,47 +122,6 @@ export default function HomeClient() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-       <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FurnitureStore",
-            "name": "EMU Furniture",
-            "image": "https://emufurniturehawassa.com/emu.png",
-            "url": "https://emufurniturehawassa.com/",
-            "telephone": "+251993449447",
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "Atote",
-              "addressLocality": "Hawassa",
-              "addressRegion": "Sidama",
-              "postalCode": "XXXXX",
-              "addressCountry": "ET"
-            },
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": 7.0561,      // replace with accurate latitude
-              "longitude": 38.4078     // replace with accurate longitude
-            },
-            "sameAs": [
-              "https://www.facebook.com/share/1DXBBB97c6/",
-              "https://www.instagram.com/emu.furniture",
-              "https://t.me/M_achatoo",
-              "https://www.tiktok.com/@emufurniture0"
-            ],
-            "priceRange": "$$",
-            "openingHoursSpecification": [
-              {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-                "opens": "09:00",
-                "closes": "19:00"
-              }
-            ]
-          })
-        }}
-      />
 
   {/* MODIFIED: ThemeToggle wrapped to avoid mobile overlap */}
   <div className="fixed top-4 right-16 z-40 md:static md:top-auto md:right-auto">

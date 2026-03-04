@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
+import { FaFacebookF, FaTelegramPlane, FaInstagram, FaTiktok, FaGithub } from 'react-icons/fa';
 
 import WhatsAppButton from '@/components/WhatsAppButton'
 
@@ -51,9 +52,8 @@ export default function RootLayout({
         {/* Company social media */}
         <div className="mt-6">
           <p className="text-amber-100 font-medium mb-3">Follow EMU Furniture</p>
-          <div className="flex justify-center md:justify-start space-x-4">
+          <div className="flex justify-center md:justify-start space-x-4 text-2xl">
 
-            {/* Facebook */}
             <a
               href="https://www.facebook.com/share/1DXBBB97c6/?mibextid=wwXIfr"
               target="_blank"
@@ -61,10 +61,9 @@ export default function RootLayout({
               aria-label="EMU Furniture Facebook"
               className="text-white hover:text-amber-300 transition-colors duration-300"
             >
-              {/* icon */}
+              <FaFacebookF />
             </a>
 
-            {/* Telegram */}
             <a
               href="https://t.me/M_achatoo"
               target="_blank"
@@ -72,10 +71,9 @@ export default function RootLayout({
               aria-label="EMU Furniture Telegram"
               className="text-white hover:text-amber-300 transition-colors duration-300"
             >
-              {/* icon */}
+              <FaTelegramPlane />
             </a>
 
-            {/* Instagram */}
             <a
               href="https://www.instagram.com/emu.furniture"
               target="_blank"
@@ -83,10 +81,9 @@ export default function RootLayout({
               aria-label="EMU Furniture Instagram"
               className="text-white hover:text-amber-300 transition-colors duration-300"
             >
-              {/* icon */}
+              <FaInstagram />
             </a>
 
-            {/* TikTok */}
             <a
               href="https://www.tiktok.com/@emufurniture0"
               target="_blank"
@@ -94,13 +91,13 @@ export default function RootLayout({
               aria-label="EMU Furniture TikTok"
               className="text-white hover:text-amber-300 transition-colors duration-300"
             >
-              {/* icon */}
+              <FaTiktok />
             </a>
           </div>
         </div>
       </div>
 
-      {/* RIGHT: Developer info (kept clean, no SEO conflict) */}
+      {/* RIGHT: Developer info */}
       <div className="text-center">
         <p className="text-amber-100 font-medium mb-2">
           Developed by <span className="font-bold text-white">Abriham Kassa</span>
@@ -109,7 +106,7 @@ export default function RootLayout({
           Freelance Software Engineer
         </p>
 
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4 text-2xl">
           <a
             href="https://github.com/Abrishkassa"
             target="_blank"
@@ -117,7 +114,7 @@ export default function RootLayout({
             aria-label="Abriham Kassa GitHub"
             className="text-white hover:text-amber-300 transition-colors duration-300"
           >
-            {/* icon */}
+            <FaGithub />
           </a>
         </div>
       </div>
@@ -125,7 +122,7 @@ export default function RootLayout({
     </div>
   </div>
 </footer>
-      </body>
-    </html>
+</body>
+</html>
   )
 }
