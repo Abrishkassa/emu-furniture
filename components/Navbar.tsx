@@ -32,7 +32,7 @@ export default function Navbar() {
   <div className="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center overflow-hidden">
     <img 
       src="/emu.png" 
-      alt="Emu Furniture Logo"
+      alt="Emu Furniture Hawassa"
       className="w-full h-full object-cover"
     />
   </div>
