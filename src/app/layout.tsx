@@ -103,7 +103,7 @@ export default function RootLayout({
           Developed by <span className="font-bold text-white">Abriham Kassa</span>
         </p>
         <p className="text-sm text-amber-300 mb-3">
-          Freelance Software Engineer
+          Freelancing Software Engineer 
         </p>
 
         <div className="flex justify-center space-x-4 text-2xl">
